@@ -324,13 +324,16 @@ Matrix.onMouseUp = ( event, width, height, ref, nData ) => {
  */
 Matrix.draw = ( width, height, ref, nData, opacity ) => {
     
-    // Initialization.
-    const canvas = ref.current,
-        g = canvas.getContext( "2d" );
-    let nColumns = Data.getColumnNames().length;
-    g.clearRect( 0, 0, ( nColumns - 1 ) * width, ( nColumns - 1 ) * height );
+    // Initialization.  If no context, do nothing.
+    let canvas = ref.current,
+        g = canvas.getContext( "2d" ),
+        nColumns = Data.getColumnNames().length;
+    if( !g ) {
+        return;
+    }
     
     // Draw the grid.
+    g.clearRect( 0, 0, ( nColumns - 1 ) * width, ( nColumns - 1 ) * height );
     g.strokeStyle = "#a0a0a0";
     for( let i = 1; ( i < nColumns - 1 ); i++ ) {
         g.moveTo( i * width + 0.5, 0 );

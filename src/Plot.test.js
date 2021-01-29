@@ -21,11 +21,23 @@ afterEach(() => {
     container = null;
 });
 
-it( "creates an svg element", () => {
+it( "draws a plot", () => {
     act(() => {
-        render( <svg width="400" height="400" />, container );
+        render( <canvas width="200" height="200" />, container );
     });
-    expect( container.childNodes.length ).toBe( 1 );
-    let svg = container.firstChild;
-    expect( svg.nodeName ).toBe( "svg" );
+    let canvas = container.firstChild;
+    let imageData = Plot.draw( 0, 0, 200, 200, canvas, 1, 0, 0, 1 );
+    expect( imageData.data.length ).toBe( 160000 );
+});
+
+it( "normalizes a rectangle", () => {
+    expect( Plot.normalize({ x:   0, y:   0, width:    0, height:    0 })).toEqual({ x: 0, y: 0, width:   0, height:   0 });
+    expect( Plot.normalize({ x:   0, y:   0, width:  100, height:  100 })).toEqual({ x: 0, y: 0, width: 100, height: 100 });
+    expect( Plot.normalize({ x: 100, y: 100, width: -100, height: -100 })).toEqual({ x: 0, y: 0, width: 100, height: 100 });
+});
+
+it( "returns whether within a rectangle", () => {
+    expect( Plot.isWithin({ x:   0, y:   0 }, { x:   0, y:   0, width:    0, height:    0 })).toBe( false );
+    expect( Plot.isWithin({ x:   0, y:   0 }, { x:   0, y:   0, width:  100, height:  100 })).toBe(  true );
+    expect( Plot.isWithin({ x:   0, y:   0 }, { x: 100, y: 100, width: -100, height: -100 })).toBe(  true );
 });

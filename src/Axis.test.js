@@ -21,11 +21,10 @@ afterEach(() => {
     container = null;
 });
 
-it( "creates an svg element", () => {
+it( "draws an axis", () => {
     act(() => {
-        render( <svg width="400" height="400" />, container );
+        render( <canvas width="200" height="200" />, container );
     });
-    expect( container.childNodes.length ).toBe( 1 );
-    let svg = container.firstChild;
-    expect( svg.nodeName ).toBe( "svg" );
+    let canvas = container.firstChild;
+    Axis.draw( 0, 0, 200, 200, canvas, 1, 0 );
 });
