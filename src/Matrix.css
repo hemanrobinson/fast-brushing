@@ -1,0 +1,6 @@
+/* CANVAS element. */
+canvas {
+    border: 1px solid #a0a0a0;
+    background-color: #ffffff;
+    font-size: 10px;
+}
