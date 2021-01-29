@@ -1,16 +1,22 @@
 import Data from './Data';
 
+it( "invokes the Data function", () => {
+    expect( Data()).toEqual( undefined );
+});
+
+it( "initializes the Data function", () => {
+    expect( Data.isSelected ).toEqual([]);
+});
+
 it( "returns column names", () => {
-    expect( Data.getColumnNames()).toEqual([ "Species", "Sepal Length (cm)", "Sepal Width (cm)", "Petal Length (cm)", "Petal Width (cm)" ]);
-    expect( Data.getColumnNames( "Iris" )).toEqual([ "Species", "Sepal Length (cm)", "Sepal Width (cm)", "Petal Length (cm)", "Petal Width (cm)" ]);
-    expect( Data.getColumnNames( "Business" )).toEqual([ "Industry", "Sales ($M)", "Employees" ]);
-    expect( Data.getColumnNames( "Cytometry" )).toEqual([ "Cluster", "Prin 1", "Prin 2" ]);
+    expect( Data.getColumnNames()).toEqual([ "isSelected", "A", "B", "A + B", "A * B" ]);
+});
+
+it( "returns domains", () => {
+    expect( Data.getDomain( 100, 0 )).toEqual([ -2, 2 ]);
 });
 
 it( "returns values", () => {
-    expect( Data.getValues().length ).toBe( 150 );
-    expect( Data.getValues( "Iris" ).length ).toBe( 150 );
-    expect( Data.getValues( "Business" ).length ).toBe( 88 );
-    expect( Data.getValues( "Cytometry" ).length ).toBe( 500 );
+    expect( Data.getValues( 100 ).length ).toBe( 100 );
 });
 

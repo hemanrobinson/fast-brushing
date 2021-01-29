@@ -21,16 +21,7 @@ afterEach(() => {
     container = null;
 });
 
-it( "creates a canvas element", () => {
-    act(() => {
-        render( <canvas width="800" height="800" />, container );
-    });
-    expect( container.childNodes.length ).toBe( 1 );
-    let canvas = container.firstChild;
-    expect( canvas.nodeName ).toBe( "CANVAS" );
-});
-
-it( "initializes a matrix", () => {
+it( "initializes a Matrix", () => {
     expect( Matrix.handleSize ).toBe( 2 );
     expect( Matrix.isGrowing ).toBe( false );
     expect( Matrix.isXMin ).toBe( false );
@@ -42,7 +33,18 @@ it( "initializes a matrix", () => {
     expect( Matrix.downLocation ).toEqual({ x: -1, y: -1 });
 });
 
+it( "renders a Matrix", () => {
+    act(() => {
+        render( <Matrix nData={100} opacity={1} />, container );
+    });
+    expect( container.childNodes.length ).toBe( 1 );
+    let canvas = container.firstChild;
+    expect( canvas.nodeName ).toBe( "CANVAS" );
+    expect( Matrix.bitmaps.length ).toBe( 4 );
+});
+
 it( "clears data structures", () => {
+    Matrix.clear();
     expect( Matrix.bitmaps ).toBe( undefined );
     expect( Matrix.selectedRows ).toBe( undefined );
     expect( Matrix.brush ).toEqual({ x: 430, y: 230, width: 30, height: 30 });
@@ -52,11 +54,15 @@ it( "clears data structures", () => {
 it( "handles mousedown, mousemove, and mouseup events", () => {
     Matrix.onMouseDown({ type: "mousedown", nativeEvent: { offsetX: 100, offsetY: 150 }, preventDefault: () => {}});
     expect( Matrix.downLocation ).toEqual({ x: 100, y: 150 });
-    Matrix.onMouseUp({ type: "mouseup", nativeEvent: { offsetX: 100, offsetY: 150 }, preventDefault: () => {}});
+    Matrix.onMouseUp({ type: "mousemove", nativeEvent: { offsetX: 150, offsetY: 100 }, preventDefault: () => {}});
+    expect( Matrix.downLocation ).toEqual({ x: 100, y: 150 });
+    Matrix.onMouseUp({ type: "mouseup", nativeEvent: { offsetX: 150, offsetY: 100 }, preventDefault: () => {}});
     expect( Matrix.downLocation ).toEqual({ x: -1, y: -1 });
+    
+    // TODO:  Grow and move the brush.
 });
 
-it( "draws a matrix", () => {
+it( "draws a Matrix", () => {
     act(() => {
         render( <canvas width="800" height="800" />, container );
     });
