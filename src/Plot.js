@@ -87,7 +87,7 @@ Plot.draw = ( x, y, width, height, canvas, nData, i, j, opacity, imageData, sele
     // Create the deselected bitmap if necessary.
     // For alpha blending, see e.g. https://en.wikipedia.org/wiki/Alpha_compositing#Alpha_blending.
     if( deselectedImageData === undefined ) {
-        deselectedImageData = g.createImageData( width, height );                           // black, transparent
+        deselectedImageData = g.createImageData( width, height );                           // black and transparent
         const d = deselectedImageData.data;
         data.forEach(( datum ) => {
             let xScaled = xScale( datum[ i ]) - x,
@@ -107,8 +107,8 @@ Plot.draw = ( x, y, width, height, canvas, nData, i, j, opacity, imageData, sele
     myImageData.data.set( deselectedImageData.data );
     const d = myImageData.data;
     
+    // Selected rows use opacity, but not alpha blending, in order to keep them bright.
     // Add the selected rows as specified...
-    // TODO:  Explore alpha blending for selected rows; for now, it seems best to keep them bright.
     if( selectedRows !== undefined ) {
         selectedRows.forEach(( row ) => {
             let xScaled = xScale( data[ row ][ i ]) - x,
@@ -120,7 +120,7 @@ Plot.draw = ( x, y, width, height, canvas, nData, i, j, opacity, imageData, sele
         });
     }
     
-    // ...or from the data.
+    // ...or add the selected rows from the data.
     else {
         let row = 0;
         data.forEach(( datum ) => {
