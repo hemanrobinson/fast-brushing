@@ -11,7 +11,7 @@ const App = () => {
     // Create state.
     const nDataDefault = 12;
     const [ nData, setNData ] = useState( App.getPower( nDataDefault ));
-    const [ opacity, setOpacity ] = useState( 0.4 );
+    const [ opacity, setOpacity ] = useState( 0.5 );
     
     // Return the component.
     return (
@@ -24,10 +24,10 @@ const App = () => {
                 <Slider defaultValue={ nDataDefault } step={ 1 } min={ 6 } max={ 18 }
                     valueLabelDisplay="auto" marks valueLabelFormat={( value ) => App.getPower( value ).toExponential()}
                     onChangeCommitted={( event, value ) => { Matrix.clear(); setNData( App.getPower( value )); }} />
-                <label>Opacity:</label>
+                <label>Transparency:</label>
                 <Slider defaultValue={ 0.5 } step={ 0.01 } min={ 0 } max={ 1 }
                     valueLabelDisplay="auto"
-                    onChangeCommitted={( event, value ) => { Matrix.clear(); setOpacity( value ); }} />
+                    onChangeCommitted={( event, value ) => { Matrix.clear(); setOpacity( 1 - value ); }} />
             </div>
             <div className="Description">
                 <p>
