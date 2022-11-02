@@ -31,10 +31,16 @@ const App = () => {
             </div>
             <div className="Description">
                 <p>
-                Brushing is a basic technique of exploratory data analysis, developed in the 1970s (<a href="https://www.researchgate.net/publication/245345268_An_interactive_multidimensional_data_display_and_analysis_system">Fishkeller, Friedman, and Tukey</a>) and 1980s (<a href="https://www.jstor.org/stable/1269768?seq=1">Becker and Cleveland</a>; <a href="https://www.jstor.org/stable/2289448?seq=1">Stuetzle</a>).
+                Brushing is a basic technique of exploratory data analysis, developed in the 1970s (<a href="https://www.researchgate.net/publication/245345268_An_interactive_multidimensional_data_display_and_analysis_system">Fishkeller, Friedman, and Tukey</a>) and 1980s (<a href="https://www.jstor.org/stable/1269768?seq=1">Becker and Cleveland</a>; <a href="https://www.jstor.org/stable/2289448?seq=1">Stuetzle</a>). Back then, analysts were happy to brush a few hundred points.  On modern hardware, we can brush a million.
                 </p>
                 <p>
-                Back then, analysts were happy to brush a few hundred points.  On modern hardware, with a fast browser, we can brush a million.
+                The colors in this example are chosen to emphasize the data.  Black on white gives maximum emphasis.  The grid, being less important, is gray.  The red selection color draws attention.  The brush is blue because blue is the default selection color in most web browsers.
+                </p>
+                <p>
+                The brush is persistent rather than transient.  A persistent brush reduces errors by giving the user repeated chances to adjust the brush size.  Also, a persistent brush supports sharing of the data patterns found during brushing.
+                </p>
+                <p>
+                Handles to resize the brush appear only when they can be used.  Otherwise, handles are omitted to minimize interference with the data.
                 </p>
             </div>
             <a href="https://github.com/hemanrobinson/brush/">Code Shared on GitHub</a>

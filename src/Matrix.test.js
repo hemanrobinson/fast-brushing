@@ -22,11 +22,12 @@ afterEach(() => {
 });
 
 it( "initializes a Matrix", () => {
-    expect( Matrix.handleSize ).toBe( 2 );
+    expect( Matrix.handleSize ).toBe( 3 );
     expect( Matrix.isGrowing ).toBe( false );
     expect( Matrix.isXMin ).toBe( false );
     expect( Matrix.isYMin ).toBe( false );
     expect( Matrix.isMoving ).toBe( false );
+    expect( Matrix.isWithin ).toBe( false );
     expect( Matrix.bitmaps ).toBe( undefined );
     expect( Matrix.selectedRows ).toBe( undefined );
     expect( Matrix.brush ).toEqual({ x: 430, y: 230, width: 30, height: 30 });
