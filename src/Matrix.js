@@ -249,15 +249,17 @@ Matrix.onMouseUp = ( event, width, height, ref, nData, opacity ) => {
         if( Matrix.isWithin !== isWithin ) {
             Matrix.isWithin = isWithin;
         
-            // If handles are being removed, draw only the plot that contains the brush.
+            // If handles are being removed, erase and draw only the plot that contains the brush.
             if( !isWithin ) {
                 let canvas = ref.current,
+                    g = canvas.getContext( "2d" ),
                     nColumns = Data.getColumnNames().length;
                 for( let i = 1; ( i < nColumns ); i++ ) {
                     for( let j = 1; ( j < nColumns ); j++ ) {
                         let x = ( i - 1 ) * width,
                             y = ( j - 1 ) * height;
                         if(( i !== j ) && Plot.isWithin({ x: xUp, y: yUp }, { x: x, y: y, width: width, height: height }, Matrix.handleSize )) {
+                            g.clearRect( x + 1, y + 1, width - 1, height - 1 );
                             Plot.draw( x, y, width, height, canvas, nData, i, j, opacity, Matrix.bitmaps[ i - 1 ][ j - 1 ], Matrix.selectedRows );
                         }
                     }
@@ -365,8 +367,10 @@ Matrix.draw = ( width, height, ref, nData, opacity ) => {
         return;
     }
     
-    // Draw the grid.
+    // Erase the drawing area.
     g.clearRect( 0, 0, ( nColumns - 1 ) * width, ( nColumns - 1 ) * height );
+    
+    // Draw the grid.
     g.strokeStyle = "#a0a0a0";
     for( let i = 1; ( i < nColumns - 1 ); i++ ) {
         g.moveTo( i * width + 0.5, 0 );
