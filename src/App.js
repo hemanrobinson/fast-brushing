@@ -16,6 +16,9 @@ const App = () => {
     // Return the component.
     return (
         <div className="Column">
+            <div className="Description">
+                <h1>Brushing a Million</h1>
+            </div>
             <div className="GridPlots">
                 <Matrix nData={nData} opacity={opacity} />
             </div>
@@ -31,8 +34,14 @@ const App = () => {
             </div>
             <div className="Description">
                 <p>
-                Brushing is a basic technique of exploratory data analysis, developed in the 1970s (<a href="https://www.researchgate.net/publication/245345268_An_interactive_multidimensional_data_display_and_analysis_system">Fishkeller, Friedman, and Tukey</a>) and 1980s (<a href="https://www.jstor.org/stable/1269768?seq=1">Becker and Cleveland</a>; <a href="https://www.jstor.org/stable/2289448?seq=1">Stuetzle</a>). Back then, analysts were happy to brush a few hundred points.  On modern hardware, we can brush a million.
+                Brushing is a basic technique of exploratory data analysis, developed in the 1970s (<a href="https://www.researchgate.net/publication/245345268_An_interactive_multidimensional_data_display_and_analysis_system">Fishkeller, Friedman, and Tukey</a>) and 1980s (<a href="https://www.jstor.org/stable/1269768?seq=1">Becker and Cleveland</a>; <a href="https://www.jstor.org/stable/2289448?seq=1">Stuetzle</a>).
                 </p>
+                <p>
+                Back then, analysts were happy to brush a few hundred points.  On modern hardware, we can brush a million.
+                </p>
+            </div>
+            <div className="Description">
+                <h2>About This User Interface</h2>
                 <p>
                 The colors in this example are chosen to emphasize the data.  Black on white gives maximum emphasis.  The grid, being less important, is gray.  The red selection color draws attention.  The brush is blue because blue is the default selection color in most web browsers.
                 </p>

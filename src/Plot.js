@@ -142,7 +142,7 @@ Plot.draw = ( x, y, width, height, canvas, nData, i, j, opacity, imageData, sele
 };
 
 /**
- * Selects rows.
+ * Selects rows within the brush and returns them.
  *
  * @param  {number}    x       X coordinate, in pixels
  * @param  {number}    y       Y coordinate, in pixels

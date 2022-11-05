@@ -159,9 +159,6 @@ Matrix.onMouseDown = ( event ) => {
     Matrix.downLocation.x = xDown;
     Matrix.downLocation.y = yDown;
     
-    // A mousedown event is either within an existing brush, or creating a new brush.
-    Matrix.isWithin = true;
-    
     // If within an existing brush, store the handle...
     if( Plot.isWithin({ x: xDown, y: yDown }, brush, Matrix.handleSize )) {
         let isXMin = false,
@@ -216,6 +213,9 @@ Matrix.onMouseDown = ( event ) => {
         Matrix.isYMin = true;
         Matrix.isMoving = false;
     }
+    
+    // A mousedown event is either within an existing brush, or within a new brush.
+    Matrix.isWithin = true;
 };
 
 /**
@@ -376,7 +376,7 @@ Matrix.draw = ( width, height, ref, nData, opacity ) => {
     }
     g.stroke();
     
-    // Draw the plots and the axes.
+    // Draw the plots and the axes.  On first draw, store the bitmaps.
     let isFirstDraw = !Matrix.bitmaps;
     if( isFirstDraw ) {
         Matrix.bitmaps = [];
@@ -414,7 +414,7 @@ Matrix.draw = ( width, height, ref, nData, opacity ) => {
 /**
  * Draws the brush.
  *
- * @param  {Array}                ref           reference to SVG element
+ * @param  {Array}   ref      reference to SVG element
  */
 Matrix.drawBrush = ( ref ) => {
     let brush = Matrix.brush;
@@ -435,7 +435,7 @@ Matrix.drawBrush = ( ref ) => {
         g.fillStyle = "#99bbdd";
         g.strokeRect( nRect.x, nRect.y, nRect.width, nRect.height );
         
-        // Draw the handles
+        // If the handles can be used, draw them.
         if( Matrix.isWithin && ( nRect.width >= size ) && ( nRect.height >= size )) {
             g.fillRect( nRect.x +                      1, nRect.y +                       1, size, size );
             g.fillRect( nRect.x + nRect.width - size - 1, nRect.y +                       1, size, size );
