@@ -46,7 +46,7 @@ const App = () => {
                 The colors in this example are chosen to emphasize the data.  Black on white gives maximum emphasis.  The grid, being less important, is gray.  The red selection color draws attention.  The brush is blue because blue is the default selection color in most web browsers.
                 </p>
                 <p>
-                The brush is persistent rather than transient.  A persistent brush reduces errors by giving the user repeated chances to adjust the brush size.  Also, a persistent brush supports sharing of the data patterns found during brushing.
+                The brush is <em>persistent</em> rather than <em>transient</em>.  A persistent brush reduces errors by giving the user repeated chances to adjust the brush size.  Also, a persistent brush supports sharing of the data patterns found during brushing.
                 </p>
                 <p>
                 Handles to resize the brush appear only when they can be used.  Otherwise, handles are omitted to minimize interference with the data.

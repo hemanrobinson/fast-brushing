@@ -30,7 +30,7 @@ it( "initializes a Matrix", () => {
     expect( Matrix.isWithin ).toBe( false );
     expect( Matrix.bitmaps ).toBe( undefined );
     expect( Matrix.selectedRows ).toBe( undefined );
-    expect( Matrix.brush ).toEqual({ x: 430, y: 230, width: 30, height: 30 });
+    expect( Matrix.brush ).toEqual({ x: 460, y: 260, width: 40, height: 40 });
     expect( Matrix.downLocation ).toEqual({ x: -1, y: -1 });
 });
 
@@ -48,7 +48,7 @@ it( "clears data structures", () => {
     Matrix.clear();
     expect( Matrix.bitmaps ).toBe( undefined );
     expect( Matrix.selectedRows ).toBe( undefined );
-    expect( Matrix.brush ).toEqual({ x: 430, y: 230, width: 30, height: 30 });
+    expect( Matrix.brush ).toEqual({ x: -1, y: -1, width: 0, height: 0 });
     expect( Matrix.downLocation ).toEqual({ x: -1, y: -1 });
 });
 

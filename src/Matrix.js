@@ -45,8 +45,12 @@ const Matrix = ( props ) => {
             Matrix.onMouseUp( event, width, height, ref, nData, opacity );
         };
     
-    // Set hook to draw on mounting.
+    // Set hook to select and draw on mounting.
     useEffect(() => {
+        const brush = Matrix.brush;
+        Matrix.downLocation = { x: brush.x, y: brush.y };
+        const event = { type: "mouseup", nativeEvent: { offsetX: brush.x + brush.width, offsetY: brush.y + brush.height }};
+        Matrix.onMouseUp( event, width, height, ref, nData, opacity );
         Matrix.draw( width, height, ref, nData, opacity );
     });
     
@@ -115,7 +119,7 @@ Matrix.selectedRows = undefined;
  *
  * @type {Rect}
  */
-Matrix.brush = { x: 430, y: 230, width: 30, height: 30 };
+Matrix.brush = { x: 460, y: 260, width: 40, height: 40 };
  
 /**
  * Down event location.  If no down location is defined, x and y are less than zero.
@@ -131,7 +135,7 @@ Matrix.clear = () => {
     Matrix.bitmaps = undefined;
     Matrix.selectedRows = undefined;
     Data.deselectAll();
-    Matrix.brush = { x: 430, y: 230, width: 30, height: 30 };
+    Matrix.brush = { x: -1, y: -1, width: 0, height: 0 };
     Matrix.downLocation = { x: -1, y: -1 };
 };
     
