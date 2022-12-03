@@ -61,15 +61,15 @@ Plot.isWithin = ( point, rect, tol ) => {
 /**
  * Draws the plot.
  *
- * @param  {number}  x            X coordinate, in pixels
- * @param  {number}               y            Y coordinate, in pixels
- * @param  {number}               width        width, in pixels
- * @param  {number}               height       height, in pixels
- * @param  {Element}              canvas       CANVAS element
- * @param  {number}               nData        number of data values
- * @param  {number}               i            X column index
- * @param  {number}               j            Y column index
- * @param  {number}               opacity      alpha
+ * @param  {number}               x             X coordinate, in pixels
+ * @param  {number}               y             Y coordinate, in pixels
+ * @param  {number}               width         width, in pixels
+ * @param  {number}               height        height, in pixels
+ * @param  {Element}              canvas        CANVAS element
+ * @param  {number}               nData         number of data values
+ * @param  {number}               i             X column index
+ * @param  {number}               j             Y column index
+ * @param  {number}               opacity       alpha
  * @param  {ImageData|undefined}  imageData     bitmap of deselected points, or undefined if none
  * @param  {number[]|undefined}   selectedRows  Array of indices of selected rows, or undefined if none
  * @return {ImageData}            bitmap of deselected points

@@ -17,7 +17,7 @@ const App = () => {
     return (
         <div className="Column">
             <div className="Description">
-                <h1>Brushing a Million</h1>
+                <h1>A Better Brush</h1>
             </div>
             <div className="GridPlots">
                 <Matrix nData={nData} opacity={opacity} />
@@ -43,13 +43,19 @@ const App = () => {
             <div className="Description">
                 <h2>About This User Interface</h2>
                 <p>
-                The colors in this example are chosen to emphasize the data.  Black on white gives maximum emphasis.  The grid, being less important, is gray.  The red selection color draws attention.  The brush is blue because blue is the default selection color in most web browsers.
+                Over the years, software products have implemented brushing in many ways.  The points below improve usability.
                 </p>
                 <p>
-                The brush is <em>persistent</em> rather than <em>transient</em>.  A persistent brush reduces errors by giving the user repeated chances to adjust the brush size.  Also, a persistent brush supports sharing of the data patterns found during brushing.
+                It's best to make the brush <em>persistent</em> rather than <em>transient</em>.  A persistent brush reduces errors by giving the user repeated chances to adjust the brush size.  Also, a persistent brush supports sharing the data exploration.
                 </p>
                 <p>
-                Handles to resize the brush appear only when they can be used.  Otherwise, handles are omitted to minimize interference with the data.
+                Handles to resize the brush ease the learning curve for novice users.  To minimize interference with the data, handles are shown only when they can be used.
+                </p>
+                <p>
+                Some brushing implementations increase the size of selected points.  Increased size increases overplotting, so it's better to use color.
+                </p>
+                <p>
+                Colors are chosen to emphasize the data.  Black on white gives maximum emphasis.  The red selection color draws attention.  The grid, being less important, is gray.  The brush could be drawn in gray also, but blue is the default selection color in most web browsers.
                 </p>
             </div>
             <a href="https://github.com/hemanrobinson/brush/">Code Shared on GitHub</a>

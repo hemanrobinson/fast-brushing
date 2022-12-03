@@ -94,7 +94,7 @@ Matrix.isYMin = false;
 Matrix.isMoving = false;
  
 /**
- * True iff the user is hovering over or resizing or moving the brush.
+ * True iff the user event is within a plot that contains a brush.
  *
  * @type {boolean}
  */
@@ -249,7 +249,11 @@ Matrix.onMouseUp = ( event, width, height, ref, nData, opacity ) => {
     
     // If the mouse button is not down, and the brush appearance changed, draw it...
     if(( xDown < 0 ) || ( yDown < 0 )) {
-        const isWithin = Plot.isWithin({ x: xUp, y: yUp }, brush, Matrix.handleSize );
+        const iEvent = Math.floor( xUp / width ),
+            jEvent = Math.floor( yUp / height ),
+            iBrush = Math.floor( brush.x / width ),
+            jBrush = Math.floor( brush.y / height ),
+            isWithin = ( iEvent === iBrush ) && ( jEvent === jBrush );
         if( Matrix.isWithin !== isWithin ) {
             Matrix.isWithin = isWithin;
         
@@ -257,17 +261,10 @@ Matrix.onMouseUp = ( event, width, height, ref, nData, opacity ) => {
             if( !isWithin ) {
                 let canvas = ref.current,
                     g = canvas.getContext( "2d" ),
-                    nColumns = Data.getColumnNames().length;
-                for( let i = 1; ( i < nColumns ); i++ ) {
-                    for( let j = 1; ( j < nColumns ); j++ ) {
-                        let x = ( i - 1 ) * width,
-                            y = ( j - 1 ) * height;
-                        if(( i !== j ) && Plot.isWithin({ x: xUp, y: yUp }, { x: x, y: y, width: width, height: height }, Matrix.handleSize )) {
-                            g.clearRect( x + 1, y + 1, width - 1, height - 1 );
-                            Plot.draw( x, y, width, height, canvas, nData, i, j, opacity, Matrix.bitmaps[ i - 1 ][ j - 1 ], Matrix.selectedRows );
-                        }
-                    }
-                }
+                    x = iBrush * width,
+                    y = jBrush * height;
+                g.clearRect( x + 1, y + 1, width - 1, height - 1 );
+                Plot.draw( x, y, width, height, canvas, nData, iBrush + 1, jBrush + 1, opacity, Matrix.bitmaps[ iBrush ][ jBrush ], Matrix.selectedRows );
             }
             
             // Draw the brush.
