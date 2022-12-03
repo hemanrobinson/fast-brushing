@@ -17,7 +17,7 @@ const App = () => {
     return (
         <div className="Column">
             <div className="Description">
-                <h1>A Better Brush</h1>
+                <h1>Better Brushing</h1>
             </div>
             <div className="GridPlots">
                 <Matrix nData={nData} opacity={opacity} />
