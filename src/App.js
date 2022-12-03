@@ -43,7 +43,7 @@ const App = () => {
             <div className="Description">
                 <h2>About This User Interface</h2>
                 <p>
-                Over the years, software products have implemented brushing in many ways.  The points below improve usability.
+                Over the years, software products have implemented brushing in many ways.  Attention to the points below can improve usability.
                 </p>
                 <p>
                 It's best to make the brush <em>persistent</em> rather than <em>transient</em>.  A persistent brush reduces errors by giving the user repeated chances to adjust the brush size.  Also, a persistent brush supports sharing the data exploration.
@@ -55,7 +55,7 @@ const App = () => {
                 Some brushing implementations increase the size of selected points.  Increased size increases overplotting, so it's better to use color.
                 </p>
                 <p>
-                Colors are chosen to emphasize the data.  Black on white gives maximum emphasis.  The red selection color draws attention.  The grid, being less important, is gray.  The brush could be drawn in gray also, but blue is the default selection color in most web browsers.
+                Colors are chosen to emphasize the data.  Black on white gives maximum emphasis.  The red selection color draws attention.  The grid, being less important, is gray.  For the same reason, the brush could be drawn in gray; however, blue is the default selection color in most web browsers.
                 </p>
             </div>
             <a href="https://github.com/hemanrobinson/brush/">Code Shared on GitHub</a>

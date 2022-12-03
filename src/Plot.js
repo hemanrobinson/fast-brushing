@@ -137,7 +137,7 @@ Plot.draw = ( x, y, width, height, canvas, nData, i, j, opacity, imageData, sele
     }
     
     // Draw and return the bitmap.
-    g.putImageData( myImageData, x, y, padding, padding, width - padding, height - padding );
+    g.putImageData( myImageData, x, y, padding, padding, width - 2 * padding, height - 2 * padding );
     return deselectedImageData;
 };
 
