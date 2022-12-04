@@ -39,6 +39,9 @@ const App = () => {
                 <p>
                 Back then, analysts were happy to brush a few hundred points.  On modern hardware, we can brush a million.
                 </p>
+                <p>
+                To optimize performance, CANVAS is used here instead of SVG, and bitmap images are cached of the deselected points.  So drawing a plot requires only bit-blitting an image, then drawing the selected points.
+                </p>
             </div>
             <div className="Description">
                 <h2>About This User Interface</h2>
