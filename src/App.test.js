@@ -24,13 +24,12 @@ it( "renders App with childnodes", () => {
     // Test structure.
     const div = container.querySelector( "div" );
     expect( div.className ).toBe( "Column" );
-    expect( div.childNodes.length ).toBe( 6 );
+    expect( div.childNodes.length ).toBe( 5 );
     expect( div.childNodes[ 0 ].className ).toBe( "Description" );
     expect( div.childNodes[ 1 ].className ).toBe( "GridPlots" );
     expect( div.childNodes[ 2 ].className ).toBe( "GridControls" );
     expect( div.childNodes[ 3 ].className ).toBe( "Description" );
-    expect( div.childNodes[ 4 ].className ).toBe( "Description" );
-    expect( div.childNodes[ 5 ].className ).toBe( "" );
+    expect( div.childNodes[ 4 ].className ).toBe( "" );
     let controls = div.childNodes[ 2 ];
     expect( controls.childNodes[ 0 ].nodeName ).toBe( "LABEL" );
     expect( controls.childNodes[ 1 ].nodeName ).toBe( "SPAN" );
