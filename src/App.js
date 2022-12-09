@@ -39,26 +39,26 @@ const App = () => {
                 <p>
                 Back then, analysts were happy to brush a few hundred points.  On modern hardware, we can brush a million.
                 </p>
-                <p>
-                To optimize performance, CANVAS is used here instead of SVG, and bitmap images are cached of the deselected points.  So drawing a plot requires only bit-blitting an image, then drawing the selected points.
-                </p>
             </div>
             <div className="Description">
-                <h2>About This User Interface</h2>
+                <h2>About this Design</h2>
                 <p>
-                Over the years, software products have implemented brushing in many ways.  Attention to the points below can improve usability.
+                This is an implementation of <a href="http://www.sci.utah.edu/~kpotter/Library/Papers/becker:1987:BS/index.html">Becker and Cleveland's scatter plot matrix</a>.  To minimize distraction, the plots display no axes, but only the range of the data.  The purpose of this graph is not to show precise locations of points, but to help discover patterns, especially two-dimensional relationships in the data.
                 </p>
                 <p>
-                It's best to make the brush <em>persistent</em> rather than <em>transient</em>.  A persistent brush reduces errors by giving the user repeated chances to adjust the brush size.  Also, a persistent brush supports sharing the data exploration.
-                </p>
-                <p>
-                Handles to resize the brush ease the learning curve for novice users.  To minimize interference with the data, handles are shown only when they can be used.
+                To optimize performance, CANVAS is used instead of SVG, and bitmap images are cached of the deselected points.  Thus drawing a plot requires only bit-blitting an image, then highlighting the selected points.  Iteration is done over a maintained list of selected points, rather than the entire data set.
                 </p>
                 <p>
                 Some brushing implementations increase the size of selected points.  Increased size increases overplotting, so it's better to use color.
                 </p>
                 <p>
                 Colors are chosen to emphasize the data.  Black on white gives maximum emphasis.  The red selection color draws attention.  The grid, being less important, is gray.  For the same reason, the brush could be drawn in gray; however, blue is the default selection color in most web browsers.
+                </p>
+                <p>
+                Handles to resize the brush ease the learning curve for novice users.  To minimize distraction with the data display, handles are shown only when they can be used.
+                </p>
+                <p>
+                The brush is <em>persistent</em> rather than <em>transient</em>.  A persistent brush reduces errors by giving the user repeated chances to adjust the brush size.  Also, a persistent brush supports sharing the data exploration.
                 </p>
             </div>
             <a href="https://github.com/hemanrobinson/brush/">Code Shared on GitHub</a>
