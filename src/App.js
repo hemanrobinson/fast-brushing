@@ -3,9 +3,7 @@ import { Slider } from '@material-ui/core';
 import Matrix from './Matrix';
 import './App.css';
 
-/**
- * Scatter plot matrix.
- */
+// Application:  Persistent Brushing
 const App = () => {
     
     // Create state.
@@ -17,7 +15,7 @@ const App = () => {
     return (
         <div className="Column">
             <div className="Description">
-                <h1>Better Brushing</h1>
+                <h1>Persistent Brushing</h1>
                 <p>
                 Brushing is a basic technique of exploratory data analysis, developed in the 1970s (<a href="https://www.researchgate.net/publication/245345268_An_interactive_multidimensional_data_display_and_analysis_system">Fishkeller, Friedman, and Tukey</a>) and 1980s (<a href="https://www.jstor.org/stable/1269768?seq=1">Becker and Cleveland</a>; <a href="https://www.jstor.org/stable/2289448?seq=1">Stuetzle</a>).  Back then, analysts were happy to brush a few hundred points.  On modern hardware, we can brush a million.
                 </p>
