@@ -37,7 +37,7 @@ const App = () => {
                     onChangeCommitted={( event, value ) => { Matrix.clear(); setOpacity( 1 - value ); }} />
             </div>
             <div className="Description">
-                <h2>About this Design</h2>
+                <h2>Design Notes</h2>
                 <p>
                 This is an implementation of <a href="http://www.sci.utah.edu/~kpotter/Library/Papers/becker:1987:BS/index.html">Becker and Cleveland's scatter plot matrix</a>.  To minimize distraction, the plots display no axes, but only the range of the data.  The purpose of this graph is not to show precise locations of points, but to help discover patterns, especially two-dimensional relationships in the data.
                 </p>
