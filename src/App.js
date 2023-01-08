@@ -59,6 +59,14 @@ const App = () => {
                 <p>
                 The brush is <em>persistent</em> rather than <em>transient</em>.  A persistent brush reduces errors by giving the user repeated chances to adjust the brush size.  Also, a persistent brush supports sharing the result of data exploration.
                 </p>
+                <br/>
+                <h2>References</h2>
+                <ul>
+                    <li><a href="https://www.researchgate.net/publication/245345268_An_interactive_multidimensional_data_display_and_analysis_system">Fishkeller, Friedman, and Tukey (1974). “PRIM-9: An Interactive Multidimensional Data Display and Analysis System” SLAC-PUB-1408. Stanford, CA: Stanford Linear Accelerator Center.</a><br/></li>
+                    <li><a href="https://www.jstor.org/stable/1269768?seq=1">Becker, R. and Cleveland, W. (1987). "Brushing Scatterplots". Technometrics. 29 (2): 127-142.</a><br/></li>
+                    <li><a href="https://www.jstor.org/stable/2289448?seq=1">Stuetzle, W. (1987). "Plot Windows". Journal of the American Statistical Association. 82 (398): 466-475.</a><br/></li>
+                    <li><a href="https://www.oreilly.com/library/view/designing-interfaces-3rd/9781492051954/">Tidwell, J. (2006). Designing Interfaces, First Edition, 182. O'Reilly Media Inc., Sebastopol CA.</a><br/>"Consider leaving the box onscreen after the selection gesture."</li>
+                </ul>
             </div>
             <a href="https://github.com/hemanrobinson/brush/">Code Shared on GitHub</a>
         </div>
