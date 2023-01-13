@@ -135,8 +135,8 @@ Matrix.clear = () => {
     Matrix.bitmaps = undefined;
     Matrix.selectedRows = undefined;
     Data.deselectAll();
-    Matrix.brush = { x: -1, y: -1, width: 0, height: 0 };
-    Matrix.downLocation = { x: -1, y: -1 };
+//    Matrix.brush = { x: -1, y: -1, width: 0, height: 0 };
+//    Matrix.downLocation = { x: -1, y: -1 };
 };
     
 /**
@@ -246,6 +246,11 @@ Matrix.onMouseUp = ( event, width, height, ref, nData, opacity ) => {
         x = i * width,
         y = j * height,
         brush = Matrix.brush;
+    
+    // If there is no brush, ignore the event.
+    if(( brush.x < 0 ) || ( brush.y < 0 )) {
+        return;
+    }
     
     // If the mouse button is not down, and the brush appearance changed, draw it...
     if(( xDown < 0 ) || ( yDown < 0 )) {
