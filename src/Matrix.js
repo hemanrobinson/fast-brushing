@@ -93,6 +93,15 @@ Matrix.bitmaps = undefined;
 Matrix.selectedRows = undefined;
 
 /**
+ * Clears data structures.
+ */
+Matrix.clear = () => {
+    Matrix.bitmaps = undefined;
+    Matrix.selectedRows = undefined;
+    Data.deselectAll();
+};
+
+/**
  * Draws the plots.
  *
  * @param  {number}  width    width in pixels

@@ -26,6 +26,12 @@ it( "initializes a Matrix", () => {
     expect( Matrix.selectedRows ).toBe( undefined );
 });
 
+it( "clears data structures", () => {
+    Matrix.clear();
+    expect( Matrix.bitmaps ).toBe( undefined );
+    expect( Matrix.selectedRows ).toBe( undefined );
+});
+
 //it( "renders a Matrix", () => {
 //    act(() => {
 //        render( <Matrix nData={100} opacity={1} />, container );
