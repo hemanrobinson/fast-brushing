@@ -22,8 +22,6 @@ const App = () => {
                 <p>
                 Drag the brush to select the points.  Drag the corners to resize the brush.  Drag a rectangle in any plot to create a new brush.
                 </p>
-            </div>
-            <div className="GridPlots">
                 <Matrix nData={nData} opacity={opacity} />
             </div>
             <div className="GridControls">

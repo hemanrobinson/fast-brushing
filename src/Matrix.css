@@ -1,6 +1,16 @@
-/* CANVAS element. */
+rect.selection {
+    fill: #bcd6fB;
+    stroke: #bcd6fB;
+    fill-opacity: 0.3;
+    stroke-opacity: 1.0;
+}
 canvas {
+    position: absolute;
     border: 1px solid #a0a0a0;
     background-color: #ffffff;
     font-size: 10px;
+}
+svg {
+    position: relative;
+    top: 0;
 }

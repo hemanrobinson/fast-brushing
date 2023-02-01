@@ -1,4 +1,5 @@
 import React, { useRef, useEffect }  from 'react';
+import * as d3 from 'd3';
 import Data from './Data';
 import Axis from './Axis';
 import Plot from './Plot';
@@ -31,74 +32,51 @@ import './Matrix.css';
 const Matrix = ( props ) => {
     
     // Initialization.
-    const width = 200, height = 200;
-    let ref = useRef(),
+    const ref = useRef(),
         { nData, opacity } = props,
-        columnNames = Data.getColumnNames(),
-        nColumns = columnNames.length;
+        width = 200,
+        height = 200,
+        nColumns = Data.getColumnNames().length,
+        totalWidth = ( nColumns - 1 ) * width,
+        totalHeight = ( nColumns - 1 ) * height;
     
-    // Support mousedown, mousemove, and mouseup events.
-    let onMouseDown = ( event ) => {
-            Matrix.onMouseDown( event );
-        },
-        onMouseUp = ( event ) => {
-            Matrix.onMouseUp( event, width, height, ref, nData, opacity );
-        };
+    // Create the brush.
+    const onStart = ( event ) => {
+        Matrix.selectedRows = undefined;
+        Data.deselectAll();
+    };
+    const onBrush = ( event ) => {
+        Matrix.selectedRows = undefined;
+        Data.deselectAll();
+        if( event.selection ) {
+            let xDown = event.selection[ 0 ][ 0 ],
+                yDown = event.selection[ 0 ][ 1 ],
+                xUp = event.selection[ 1 ][ 0 ],
+                yUp = event.selection[ 1 ][ 1 ],
+                i = Math.floor( xDown / width ),
+                j = Math.floor( yDown / height ),
+                x = i * width,
+                y = j * height;
+            Matrix.selectedRows = ( i === j ) ? [] : Plot.select( x, y, width, height, nData, i + 1, j + 1, { x: xDown, y: yDown, width: xUp - xDown, height: yUp - yDown });
+        }
+        Matrix.draw( width, height, ref, nData, opacity );
+    };
+    const brush = d3.brush()
+        .on( "start", onStart )
+        .on( "brush end", onBrush );
     
     // Set hook to select and draw on mounting.
     useEffect(() => {
-        const brush = Matrix.brush;
-        Matrix.downLocation = { x: brush.x, y: brush.y };
-        const event = { type: "mouseup", nativeEvent: { offsetX: brush.x + brush.width, offsetY: brush.y + brush.height }};
-        Matrix.onMouseUp( event, width, height, ref, nData, opacity );
         Matrix.draw( width, height, ref, nData, opacity );
+        const svg = d3.select( ref.current.childNodes[ 1 ]);
+        svg
+            .call( brush )
+            .call( brush.move, [[ 460, 260 ], [ 500, 300 ]]);
     });
     
     // Return the component.
-    return <canvas width={( nColumns - 1 ) * width} height={( nColumns - 1 ) * height} ref={ref} onMouseDown={onMouseDown} onMouseMove={onMouseUp} onMouseUp={onMouseUp}></canvas>;
+    return <div ref={ref}><canvas width={totalWidth} height={totalHeight}></canvas><svg width={totalWidth} height={totalHeight}></svg></div>;
 };
- 
-/**
- * Brush handle size.
- *
- * @constant {number}
- */
-Matrix.handleSize = 3;
- 
-/**
- * True iff the user is resizing the brush.
- *
- * @type {boolean}
- */
-Matrix.isGrowing = false;
- 
-/**
- * True iff the user is resizing the brush with one of the minimum X handles.
- *
- * @type {boolean}
- */
-Matrix.isXMin = false;
- 
-/**
- * True iff the user is resizing the brush with one of the minimum Y handles.
- *
- * @type {boolean}
- */
-Matrix.isYMin = false;
- 
-/**
- * True iff the user is moving the brush.
- *
- * @type {boolean}
- */
-Matrix.isMoving = false;
- 
-/**
- * True iff the user event is within a plot that contains a brush.
- *
- * @type {boolean}
- */
-Matrix.isWithin = false;
 
 /**
  * Bitmaps of deselected rows, cached for optimization.
@@ -113,250 +91,13 @@ Matrix.bitmaps = undefined;
  * @type {number[]|undefined}
  */
 Matrix.selectedRows = undefined;
- 
-/**
- * Brush.  If no brush is defined, x and y are less than zero.
- *
- * @type {Rect}
- */
-Matrix.brush = { x: 460, y: 260, width: 40, height: 40 };
- 
-/**
- * Down event location.  If no down location is defined, x and y are less than zero.
- *
- * @type {Point}
- */
-Matrix.downLocation = { x: -1, y: -1 };
- 
-/**
- * Clears data structures.
- */
-Matrix.clear = () => {
-    Matrix.bitmaps = undefined;
-    Matrix.selectedRows = undefined;
-    Data.deselectAll();
-//    Matrix.brush = { x: -1, y: -1, width: 0, height: 0 };
-//    Matrix.downLocation = { x: -1, y: -1 };
-};
-    
-/**
- * Handles mouse down event.
- *
- * This method modifies Matrix.downLocation.
- *
- * @param  {Event}    event     event
- */
-Matrix.onMouseDown = ( event ) => {
-
-    // Initialization.
-    const size = Matrix.handleSize,
-        halfSize = size / 2,
-        tol = 2 * size;
-    let xDown = event.nativeEvent.offsetX,
-        yDown = event.nativeEvent.offsetY,
-        brush = Matrix.brush;
-        
-    // Prevent text selection.
-    event.preventDefault();
-        
-    // Reset the mousedown coordinates.
-    Matrix.downLocation.x = xDown;
-    Matrix.downLocation.y = yDown;
-    
-    // If within an existing brush, store the handle...
-    if( Plot.isWithin({ x: xDown, y: yDown }, brush, Matrix.handleSize )) {
-        let isXMin = false,
-            isXMax = false,
-            isYMin = false,
-            isYMax = false;
-        if( brush.width >= 0 ) {
-            if( Math.abs( brush.x + brush.width - halfSize - xDown ) <= tol ) {
-                isXMax = true;
-            } else if( Math.abs( brush.x + halfSize - xDown ) <= tol ) {
-                isXMin = true;
-            }
-        } else {
-            if( Math.abs( brush.x + brush.width + halfSize - xDown ) <= tol ) {
-                isXMin = true;
-            } else if( Math.abs( brush.x - halfSize - xDown ) <= tol ) {
-                isXMax = true;
-            }
-        }
-        if( brush.height >= 0 ) {
-            if( Math.abs( brush.y + brush.height - halfSize - yDown ) <= tol ) {
-                isYMin = true;
-            } else if( Math.abs( brush.y + halfSize - yDown ) <= tol ) {
-                isYMax = true;
-            }
-        } else {
-            if( Math.abs( brush.y + brush.height + halfSize - yDown ) <= tol ) {
-                isYMax = true;
-            } else if( Math.abs( brush.y - halfSize - yDown ) <= tol ) {
-                isYMin = true;
-            }
-        }
-        Matrix.isGrowing = false;
-        Matrix.isMoving = false;
-        if(( isXMin || isXMax ) && ( isYMin || isYMax )) {
-            Matrix.isGrowing = true;
-            Matrix.isXMin = isXMin;
-            Matrix.isYMin = isYMin;
-        } else {
-            Matrix.isMoving = true;
-        }
-    }
-    
-    // ...otherwise start creating a new brush.
-    else {
-        Matrix.brush.x = xDown;
-        Matrix.brush.y = yDown;
-        Matrix.brush.width = 0;
-        Matrix.brush.height = 0;
-        Matrix.isGrowing = true;
-        Matrix.isXMin = false;
-        Matrix.isYMin = true;
-        Matrix.isMoving = false;
-    }
-    
-    // A mousedown event is either within an existing brush, or within a new brush.
-    Matrix.isWithin = true;
-};
-
-/**
- * Handles mouse up event.
- *
- * This method modifies Matrix.downLocation.
- *
- * @param  {Event}   event    event
- * @param  {number}  width    width, in pixels
- * @param  {number}  height   height, in pixels
- * @param  {Object}  ref      reference to SVG element
- * @param  {number}  nData    number of data values
- * @param  {number}  opacity  alpha
- */
-Matrix.onMouseUp = ( event, width, height, ref, nData, opacity ) => {
-
-    // Initialization.
-    let xDown = Matrix.downLocation.x,
-        yDown = Matrix.downLocation.y,
-        xUp = event.nativeEvent.offsetX,
-        yUp = event.nativeEvent.offsetY,
-        i = Math.floor( xDown / width ),
-        j = Math.floor( yDown / height ),
-        x = i * width,
-        y = j * height,
-        brush = Matrix.brush;
-    
-    // If there is no brush, ignore the event.
-    if(( brush.x < 0 ) || ( brush.y < 0 )) {
-        return;
-    }
-    
-    // If the mouse button is not down, and the brush appearance changed, draw it...
-    if(( xDown < 0 ) || ( yDown < 0 )) {
-        const iEvent = Math.floor( xUp / width ),
-            jEvent = Math.floor( yUp / height ),
-            iBrush = Math.floor( brush.x / width ),
-            jBrush = Math.floor( brush.y / height ),
-            isWithin = ( iEvent === iBrush ) && ( jEvent === jBrush );
-        if( Matrix.isWithin !== isWithin ) {
-            Matrix.isWithin = isWithin;
-        
-            // If handles are being removed, erase and draw only the plot that contains the brush.
-            if( !isWithin ) {
-                let canvas = ref.current,
-                    g = canvas.getContext( "2d" ),
-                    x = iBrush * width,
-                    y = jBrush * height;
-                g.clearRect( x + 1, y + 1, width - 1, height - 1 );
-                Plot.draw( x, y, width, height, canvas, nData, iBrush + 1, jBrush + 1, opacity, Matrix.bitmaps[ iBrush ][ jBrush ], Matrix.selectedRows );
-            }
-            
-            // Draw the brush.
-            Matrix.drawBrush( ref );
-        }
-    }
-        
-    // ...or if the event is on an axis, deselect on mouseup...
-    else if( i === j ) {
-        if( event.type === "mouseup" ) {
-            Data.deselectAll();
-            Matrix.selectedRows = undefined;
-            Matrix.draw( width, height, ref, nData, opacity );
-        }
-    }
-        
-    // ...or if the event is on a plot, handle brushing.
-    else {
-        
-        // Grow the brush...
-        if( Matrix.isGrowing ) {
-            xUp = Math.min( x + width  - 1, Math.max( x + 1, xUp ));
-            yUp = Math.min( y + height - 1, Math.max( y + 1, yUp ));
-            if( Matrix.isXMin ) {
-                brush.width -= xUp - brush.x;
-                brush.x = xUp;
-            } else {
-                brush.width = xUp - brush.x;
-            }
-            if( Matrix.isYMin ) {
-                brush.height = yUp - brush.y;
-            } else {
-                brush.height -= yUp - brush.y;
-                brush.y = yUp;
-            }
-        }
-        
-        // ...or move the brush.
-        else if( Matrix.isMoving ) {
-            brush.x += xUp - xDown;
-            brush.y += yUp - yDown;
-            Matrix.downLocation.x = xUp;
-            Matrix.downLocation.y = yUp;
-            if( brush.x < x + 1 ) {
-                brush.x = x + 1;
-            }
-            if( brush.x > x + width - 1 - brush.width ) {
-                brush.x = x + width - 1 - brush.width;
-            }
-            if( brush.y < y + 1 ) {
-                brush.y = y + 1;
-            }
-            if( brush.y > y + height - 1 - brush.height ) {
-                brush.y = y + height - 1 - brush.height;
-            }
-        }
-        
-        // Select points within the brush, and deselect all others.
-        Matrix.selectedRows = Plot.select( x, y, width, height, nData, i + 1, j + 1, brush );
-        Matrix.draw( width, height, ref, nData, opacity );
-    }
-    
-    // On mouseup, clear the down location and normalize the brush.
-    if( event.type === "mouseup" ) {
-        Matrix.downLocation.x = -1;
-        Matrix.downLocation.y = -1;
-        Matrix.isGrowing = false;
-        Matrix.isXMin = false;
-        Matrix.isYMin = false;
-        Matrix.isMoving = false;
-        if( brush.width < 0 ) {
-            brush.x += brush.width;
-            brush.width = -brush.width;
-        }
-        if( brush.height < 0 ) {
-            brush.y += brush.height;
-            brush.height = -brush.height;
-        }
-    }
-};
 
 /**
  * Draws the plots.
  *
  * @param  {number}  width    width in pixels
  * @param  {number}  height   height in pixels
- * @param  {Array}   ref      reference to SVG element
+ * @param  {Object}  ref      reference to DIV
  * @param  {number}  nData    number of data values
  * @param  {number}  opacity  alpha
  */
@@ -366,7 +107,7 @@ Matrix.draw = ( width, height, ref, nData, opacity ) => {
     if( !ref ) {
         return;
     }
-    let canvas = ref.current,
+    let canvas = ref.current.firstChild,
         g = canvas.getContext( "2d" ),
         nColumns = Data.getColumnNames().length;
     if( !g ) {
@@ -414,43 +155,6 @@ Matrix.draw = ( width, height, ref, nData, opacity ) => {
                     Plot.draw( x, y, width, height, canvas, nData, i, j, opacity, Matrix.bitmaps[ i - 1 ][ j - 1 ], Matrix.selectedRows );
                 }
             }
-        }
-    }
-    
-    // Draw the brush.
-    Matrix.drawBrush( ref );
-};
-
-/**
- * Draws the brush.
- *
- * @param  {Array}   ref      reference to SVG element
- */
-Matrix.drawBrush = ( ref ) => {
-    let brush = Matrix.brush;
-    if(( brush.x >= 0 ) && ( brush.y >= 0 )) {
-        
-        // Normalize the brush and minimize anti-aliasing.
-        const size = Matrix.handleSize;
-        let nRect = Plot.normalize( brush );
-        nRect.x = Math.floor( nRect.x ) + 0.5;
-        nRect.y = Math.floor( nRect.y ) + 0.5;
-        nRect.width = Math.round( nRect.width );
-        nRect.height = Math.round( nRect.height );
-        
-        // Draw the brush.
-        let canvas = ref.current,
-            g = canvas.getContext( "2d" );
-        g.strokeStyle = "#99bbdd";
-        g.fillStyle = "#99bbdd";
-        g.strokeRect( nRect.x, nRect.y, nRect.width, nRect.height );
-        
-        // If the handles can be used, draw them.
-        if( Matrix.isWithin && ( nRect.width >= size ) && ( nRect.height >= size )) {
-            g.fillRect( nRect.x +                      1, nRect.y +                       1, size, size );
-            g.fillRect( nRect.x + nRect.width - size - 1, nRect.y +                       1, size, size );
-            g.fillRect( nRect.x +                      1, nRect.y + nRect.height - size - 1, size, size );
-            g.fillRect( nRect.x + nRect.width - size - 1, nRect.y + nRect.height - size - 1, size, size );
         }
     }
 };

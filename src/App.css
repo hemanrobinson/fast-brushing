@@ -12,12 +12,6 @@ div {
     display: flex;
     flex-direction: column;
 }
-.GridPlots {
-    display: grid;
-    grid-template-columns: repeat( 1, 1fr );
-    justify-items: center;
-    margin: 0 auto;
-}
 .GridControls {
     display: grid;
     grid-template-columns: auto 200px;
