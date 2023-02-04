@@ -24,14 +24,18 @@ afterEach(() => {
 it( "initializes a Matrix", () => {
     expect( Matrix.bitmaps ).toBe( undefined );
     expect( Matrix.selectedRows ).toBe( undefined );
+    expect( Matrix.brush ).toBe( undefined );
+    expect( Matrix.brushNode ).toBe( undefined );
 });
 
 it( "clears data structures", () => {
     Matrix.clear();
     expect( Matrix.bitmaps ).toBe( undefined );
     expect( Matrix.selectedRows ).toBe( undefined );
+    expect( Matrix.brushNode ).toBe( undefined );
 });
 
+// In brush.js, svg.width.baseVal is undefined.
 //it( "renders a Matrix", () => {
 //    act(() => {
 //        render( <Matrix nData={100} opacity={1} />, container );

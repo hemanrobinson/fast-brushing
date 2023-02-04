@@ -14,6 +14,7 @@ afterEach(() => {
     container = null;
 });
 
+// In brush.js, svg.width.baseVal is undefined.
 //it( "renders App with childnodes", () => {
 //    
 //    // Test first render and componentDidMount.

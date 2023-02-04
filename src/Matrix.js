@@ -40,38 +40,59 @@ const Matrix = ( props ) => {
         totalWidth = ( nColumns - 1 ) * width,
         totalHeight = ( nColumns - 1 ) * height;
     
-    // Create the brush.
-    const onStart = ( event ) => {
-        Matrix.selectedRows = undefined;
-        Data.deselectAll();
-    };
-    const onBrush = ( event ) => {
-        Matrix.selectedRows = undefined;
-        Data.deselectAll();
-        if( event.selection ) {
-            let xDown = event.selection[ 0 ][ 0 ],
-                yDown = event.selection[ 0 ][ 1 ],
-                xUp = event.selection[ 1 ][ 0 ],
-                yUp = event.selection[ 1 ][ 1 ],
-                i = Math.floor( xDown / width ),
-                j = Math.floor( yDown / height ),
-                x = i * width,
-                y = j * height;
-            Matrix.selectedRows = ( i === j ) ? [] : Plot.select( x, y, width, height, nData, i + 1, j + 1, { x: xDown, y: yDown, width: xUp - xDown, height: yUp - yDown });
-        }
-        Matrix.draw( width, height, ref, nData, opacity );
-    };
-    const brush = d3.brush()
-        .on( "start", onStart )
-        .on( "brush end", onBrush );
-    
     // Set hook to select and draw on mounting.
     useEffect(() => {
-        Matrix.draw( width, height, ref, nData, opacity );
+        
+        // Create the matrix.
         const svg = d3.select( ref.current.childNodes[ 1 ]);
-        svg
-            .call( brush )
-            .call( brush.move, [[ 460, 260 ], [ 500, 300 ]]);
+        const cell = svg.append( "g" )
+            .selectAll( "g" )
+            .data( d3.cross(d3.range( nColumns ), d3.range( nColumns )))
+            .join( "g" )
+            .attr( "transform", ([ i, j ]) => `translate(${ i * width },${ j * height })` );
+            
+        // Create the brush.
+        const onStart = ( event ) => {
+            if( !event.sourceEvent ) {
+                return;
+            }
+            const target = event.sourceEvent.target.parentNode;
+            if( Matrix.brushNode !== target ) {
+                d3.select( Matrix.brushNode ).call( brush.move, null );
+                Matrix.brushNode = target;
+            }
+            Matrix.selectedRows = undefined;
+            Data.deselectAll();
+        };
+        const onBrush = ( event ) => {
+            Matrix.selectedRows = undefined;
+            Data.deselectAll();
+            if( event.selection ) {
+                let offsetX = event.sourceEvent ? event.sourceEvent.offsetX : 400,
+                    offsetY = event.sourceEvent ? event.sourceEvent.offsetY : 200,
+                    xDown = event.selection[ 0 ][ 0 ],
+                    yDown = event.selection[ 0 ][ 1 ],
+                    xUp = event.selection[ 1 ][ 0 ],
+                    yUp = event.selection[ 1 ][ 1 ],
+                    i = Math.floor( offsetX / width ),
+                    j = Math.floor( offsetY / height ),
+                    x = i * width,
+                    y = j * height;
+                Matrix.selectedRows = ( i === j ) ? [] : Plot.select( x, y, width, height, nData, i + 1, j + 1, { x: x + xDown, y: y + yDown, width: xUp - xDown, height: yUp - yDown });
+            }
+            Matrix.draw( width, height, ref, nData, opacity );
+        };
+        const brush = d3.brush()
+            .extent([[ 2, 2 ], [ width, height ]])
+            .on( "start", onStart )
+            .on( "brush end", onBrush );
+        cell.call( brush );
+        Matrix.brush = brush;
+    
+        // Initialize the brush.
+        const myCell = cell.filter(( d, i ) => { return i === 11 });
+        myCell.call( brush.move, [[ 60, 60 ], [ 100, 100 ]]);
+        Matrix.brushNode = myCell.node();
     });
     
     // Return the component.
@@ -79,26 +100,44 @@ const Matrix = ( props ) => {
 };
 
 /**
- * Bitmaps of deselected rows, cached for optimization.
+ * Bitmaps of deselected rows, cached for optimization, or undefined if none.
  *
  * @type {ImageData[][]|undefined}
  */
 Matrix.bitmaps = undefined;
  
 /**
- * Array of indices of selected rows, or undefined if none.
+ * Array of indices of selected rows, cached for optimization, or undefined if none.
  *
  * @type {number[]|undefined}
  */
 Matrix.selectedRows = undefined;
+ 
+/**
+ * Brush, or undefined if none.
+ *
+ * @type {d3.brush|undefined}
+ */
+Matrix.brush = undefined;
+ 
+/**
+ * Node containing a brush, or undefined if none.
+ *
+ * @type {Node|undefined}
+ */
+Matrix.brushNode = undefined;
 
 /**
  * Clears data structures.
  */
 Matrix.clear = () => {
+    Data.deselectAll();
     Matrix.bitmaps = undefined;
     Matrix.selectedRows = undefined;
-    Data.deselectAll();
+    if( Matrix.brushNode && Matrix.brush ) {
+        d3.select( Matrix.brushNode ).call( Matrix.brush.move, null );
+        Matrix.brushNode = undefined;
+    }
 };
 
 /**
@@ -127,7 +166,7 @@ Matrix.draw = ( width, height, ref, nData, opacity ) => {
     g.clearRect( 0, 0, ( nColumns - 1 ) * width, ( nColumns - 1 ) * height );
     
     // Draw the grid.
-    g.strokeStyle = "#a0a0a0";
+    g.strokeStyle = "#939ba1";
     for( let i = 1; ( i < nColumns - 1 ); i++ ) {
         g.moveTo( i * width + 0.5, 0 );
         g.lineTo( i * width + 0.5, ( nColumns - 1 ) * height );
