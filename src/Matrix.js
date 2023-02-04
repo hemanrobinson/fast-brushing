@@ -43,11 +43,12 @@ const Matrix = ( props ) => {
     // Set hook to select and draw on mounting.
     useEffect(() => {
         
-        // Create the matrix.
+        // Create the matrix (after https://observablehq.com/@d3/brushable-scatterplot-matrix?collection=@d3/d3-brush).
         const svg = d3.select( ref.current.childNodes[ 1 ]);
+        svg.selectAll( "*" ).remove();
         const cell = svg.append( "g" )
             .selectAll( "g" )
-            .data( d3.cross(d3.range( nColumns ), d3.range( nColumns )))
+            .data( d3.cross(d3.range( nColumns - 1 ), d3.range( nColumns - 1 )))
             .join( "g" )
             .attr( "transform", ([ i, j ]) => `translate(${ i * width },${ j * height })` );
             
@@ -90,7 +91,7 @@ const Matrix = ( props ) => {
         Matrix.brush = brush;
     
         // Initialize the brush.
-        const myCell = cell.filter(( d, i ) => { return i === 11 });
+        const myCell = cell.filter(( d, i ) => { return i === 9 });
         myCell.call( brush.move, [[ 60, 60 ], [ 100, 100 ]]);
         Matrix.brushNode = myCell.node();
     });
