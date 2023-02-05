@@ -62,11 +62,11 @@ const Matrix = ( props ) => {
                 d3.select( Matrix.brushNode ).call( brush.move, null );
                 Matrix.brushNode = target;
             }
-            Matrix.selectedRows = undefined;
+            Matrix.selectedRows = [];
             Data.deselectAll();
         };
         const onBrush = ( event ) => {
-            Matrix.selectedRows = undefined;
+            Matrix.selectedRows = [];
             Data.deselectAll();
             if( event.selection ) {
                 let offsetX = event.sourceEvent ? event.sourceEvent.offsetX : 400,
@@ -89,11 +89,11 @@ const Matrix = ( props ) => {
             .on( "brush end", onBrush );
         cell.call( brush );
         Matrix.brush = brush;
-    
+        
         // Initialize the brush.
-        const myCell = cell.filter(( d, i ) => { return i === 9 });
-        myCell.call( brush.move, [[ 60, 60 ], [ 100, 100 ]]);
-        Matrix.brushNode = myCell.node();
+        Matrix.brushNode = svg.node().firstChild.childNodes[ 9 ];
+        const brushCell = d3.select( Matrix.brushNode );
+        brushCell.call( brush.move, [[ 60, 60 ], [ 100, 100 ]]);
     });
     
     // Return the component.
@@ -108,11 +108,11 @@ const Matrix = ( props ) => {
 Matrix.bitmaps = undefined;
  
 /**
- * Array of indices of selected rows, cached for optimization, or undefined if none.
+ * Array of indices of selected rows, cached for optimization.
  *
- * @type {number[]|undefined}
+ * @type {number[]}
  */
-Matrix.selectedRows = undefined;
+Matrix.selectedRows = [];
  
 /**
  * Brush, or undefined if none.
@@ -134,7 +134,7 @@ Matrix.brushNode = undefined;
 Matrix.clear = () => {
     Data.deselectAll();
     Matrix.bitmaps = undefined;
-    Matrix.selectedRows = undefined;
+    Matrix.selectedRows = [];
     if( Matrix.brushNode && Matrix.brush ) {
         d3.select( Matrix.brushNode ).call( Matrix.brush.move, null );
         Matrix.brushNode = undefined;
@@ -199,7 +199,8 @@ Matrix.draw = ( width, height, ref, nData, opacity ) => {
                     if( Matrix.bitmaps[ i - 1 ] === undefined ) {
                         Matrix.bitmaps[ i - 1 ] = [];
                     }
-                    Matrix.bitmaps[ i - 1 ][ j - 1 ] = Plot.draw( x, y, width, height, canvas, nData, i, j, opacity );
+                    Matrix.bitmaps[ i - 1 ][ j - 1 ] =
+                        Plot.draw( x, y, width, height, canvas, nData, i, j, opacity, undefined, Matrix.selectedRows );
                 } else {
                     Plot.draw( x, y, width, height, canvas, nData, i, j, opacity, Matrix.bitmaps[ i - 1 ][ j - 1 ], Matrix.selectedRows );
                 }

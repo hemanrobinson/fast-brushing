@@ -107,7 +107,7 @@ Plot.draw = ( x, y, width, height, canvas, nData, i, j, opacity, imageData, sele
     myImageData.data.set( deselectedImageData.data );
     const d = myImageData.data;
     
-    // Selected rows use opacity, but not alpha blending, in order to keep them bright.
+    // Selected rows use opacity, but not alpha blending, in order to keep them bright.  TODO:  Explore alternatives to this.
     // Add the selected rows as specified...
     if( selectedRows !== undefined ) {
         selectedRows.forEach(( row ) => {

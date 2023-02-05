@@ -23,7 +23,7 @@ afterEach(() => {
 
 it( "initializes a Matrix", () => {
     expect( Matrix.bitmaps ).toBe( undefined );
-    expect( Matrix.selectedRows ).toBe( undefined );
+    expect( Matrix.selectedRows ).toEqual([]);
     expect( Matrix.brush ).toBe( undefined );
     expect( Matrix.brushNode ).toBe( undefined );
 });
@@ -31,7 +31,7 @@ it( "initializes a Matrix", () => {
 it( "clears data structures", () => {
     Matrix.clear();
     expect( Matrix.bitmaps ).toBe( undefined );
-    expect( Matrix.selectedRows ).toBe( undefined );
+    expect( Matrix.selectedRows ).toEqual([]);
     expect( Matrix.brushNode ).toBe( undefined );
 });
 
