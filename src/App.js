@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Slider } from '@material-ui/core';
+import { Slider } from '@mui/material';
 import Matrix from './Matrix';
 import './App.css';
 
