@@ -29,7 +29,7 @@ Data.deselectAll = () => {
  * @return {string[]}  column names
  */
 Data.getColumnNames = () => {
-    return [ "isSelected", "A", "B", "A + B", "A * B" ];
+    return [ "isSelected", "A", "B", "A * B", "Math.log( 2 + A + B )"];
 };
 
 /**
@@ -41,7 +41,7 @@ Data.getColumnNames = () => {
  */
 Data.getDomain = ( nData, i ) => {
 //  return [ d3.min( Data.getValues( nData ), d => d[ index ]), d3.max( Data.getValues( nData ), d => d[ index ])];
-    return [ -2, 2 ];   // consistently spreads the data
+    return [ -1.5, 1.5 ];   // consistently spreads the data
 };
 
 /**
@@ -63,7 +63,7 @@ Data.getValues = ( nData ) => {
         Data.values = [];
         for( let i = 0; ( i < nData ); i++ ) {
             let x = f(), y = f();
-            Data.values[ i ] = [ false, x, y, x + y, x * y ];
+            Data.values[ i ] = [ false, x, y, x * y, Math.log( 2 + x + y )];
         }
     }
     return Data.values;

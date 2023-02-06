@@ -23,6 +23,7 @@ const App = () => {
                 Drag the brush to select the points.  Drag the edges to resize the brush.  Drag a rectangle in any plot to create a new brush.  Use the sliders to adjust the number of points and their transparency.
                 </p>
                 <Matrix nData={nData} opacity={opacity} />
+                <br />
             </div>
             <div className="GridControls">
                 <label>Points per Plot:</label>
@@ -30,7 +31,7 @@ const App = () => {
                     valueLabelDisplay="auto" marks valueLabelFormat={( value ) => { let s = App.getPower( value ); if( s >= 10000 ) s = s / 1000 + "K"; return s }}
                     onChangeCommitted={( event, value ) => { Matrix.clear(); setNData( App.getPower( value )); }} />
                 <label>Transparency:</label>
-                <Slider defaultValue={ 0.5 } step={ 0.01 } min={ 0 } max={ 1 }
+                <Slider defaultValue={ 0.5 } step={ 0.01 } min={ 0 } max={ 0.99 }
                     valueLabelDisplay="auto"
                     onChangeCommitted={( event, value ) => { Matrix.clear(); setOpacity( 1 - value ); }} />
             </div>
@@ -46,13 +47,13 @@ const App = () => {
                 For large data sets, transparency shows density (Wegman and Luo, 2002).  This gives the scatter plots much of the functionality of contour plots, while still displaying individual points.
                 </p>
                 <p>
-                In d3's implementation, the brush is <em>persistent</em> rather than <em>transient</em>.  A persistent brush reduces errors, by enabling the user to resize the brush (Tidwell, 2006).  A persistent brush also enables users to share the path of their exploration through screen shots or other means.
+                In d3's implementation, the brush is <em>persistent</em> rather than <em>transient</em>.  A persistent brush reduces errors, by enabling the user to resize the brush (Tidwell, 2010).  A persistent brush also helps users share the paths of their explorations, e.g. through screen shots.
                 </p>
                 <p>
                 Colors are chosen to emphasize the data.  Black on white gives maximum emphasis.  The red selection color draws attention.  The grid, being less important, is gray.
                 </p>
                 <p>
-                The brush is blue because usability tests pointed out that blue is the standard color for selection (Ho, 2016).  Following standards eases the user's learning curve:  this blue object makes selections, like all the others.
+                Usability tests suggested that the brush should be blue, the standard selection color (Ho, 2016).  Following standards eases the user's learning curve:  this blue object makes selections, like all the others.
                 </p>
                 <p>
                 The following optimizations improve performance:
@@ -64,7 +65,7 @@ const App = () => {
                 <li>Selected row indices are cached, so that drawing iterates over a short list, not the entire data set.</li>
                 </ol>
                 <p>
-                Performance varies on different devices, but a fast box can display 100,000 points per plot.  A matrix of twelve plots displays a total of 1,200,000 points.
+                Performance varies, but a fast box can display 100,000 points per plot.  So a 4x4 matrix can brush 1.2 million points.
                 </p>
                 <br/>
                 <h2>References</h2>
