@@ -46,18 +46,18 @@ const App = () => {
                 <p>
                 Parts of this implementation derive from code in <a href="https://observablehq.com/collection/@d3/d3-brush">the d3-brush collection</a>.
                 </p>
+                <p className="center">
+                    <a href="https://www.cerias.purdue.edu/site/people/faculty/view/709"><img title="Dr. William Cleveland" alt="Dr. William Cleveland" src={cleveland}/></a>
+                    <br />
+                </p>
                 <p>
                 This design derives from the <a href="http://www.sci.utah.edu/~kpotter/Library/Papers/becker:1987:BS/index.html">scatter plot matrix</a> of (Becker and Cleveland, 1987).  Dr. Werner Stuetzle published his similar <a href="https://sites.stat.washington.edu/people/wxs/Visualization-papers/plot-windows.pdf">"Plot Windows"</a> in the same year (Stuetzle, 1987).
-                </p>
-                <p className="center">
-                    <a href="https://www.cerias.purdue.edu/site/people/faculty/view/709"><img alt="Dr. William Cleveland" src={cleveland}/></a>
-                    <br />
                 </p>
                 <p>
                 Both systems built on the work of <a href="https://www.stat.berkeley.edu/~brill/Papers/life.pdf">John Tukey</a> and colleagues a decade earlier (Fishkeller, Friedman, and Tukey, 1974).  The <a href="https://www.youtube.com/watch?v=B7XoW2qiFUA">PRIM-9 video</a> shows how much these researchers achieved with the hardware available at the time.
                 </p>
                 <p className="center">
-                    <a href="https://www.stat.berkeley.edu/~brill/Papers/life.pdf"><img alt="Dr. John Tukey" src={tukey}/></a>
+                    <a href="https://www.stat.berkeley.edu/~brill/Papers/life.pdf"><img title="Dr. John Tukey" alt="Dr. John Tukey" src={tukey}/></a>
                     <br />
                 </p>
                 <p>
