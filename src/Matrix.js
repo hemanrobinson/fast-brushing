@@ -132,13 +132,9 @@ Matrix.brushNode = undefined;
  * Clears data structures.
  */
 Matrix.clear = () => {
+    Matrix.selectedRows = [];
     Data.deselectAll();
     Matrix.bitmaps = undefined;
-    Matrix.selectedRows = [];
-    if( Matrix.brushNode && Matrix.brush ) {
-        d3.select( Matrix.brushNode ).call( Matrix.brush.move, null );
-        Matrix.brushNode = undefined;
-    }
 };
 
 /**
@@ -180,7 +176,7 @@ Matrix.draw = ( width, height, ref, nData, opacity ) => {
     let isFirstDraw = !Matrix.bitmaps;
     if( isFirstDraw ) {
         Matrix.bitmaps = [];
-    }
+    }        
     for( let i = 1; ( i < nColumns ); i++ ) {
         for( let j = 1; ( j < nColumns ); j++ ) {
 

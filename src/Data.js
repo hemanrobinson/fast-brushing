@@ -29,7 +29,7 @@ Data.deselectAll = () => {
  * @return {string[]}  column names
  */
 Data.getColumnNames = () => {
-    return [ "isSelected", "A", "B", "A * B", "Math.log( 2 + A + B )"];
+    return [ "isSelected", "A", "B", "A * B", "sin( A / B )"];
 };
 
 /**
@@ -62,8 +62,8 @@ Data.getValues = ( nData ) => {
         let f = d3.randomNormal( 0, 0.5 );
         Data.values = [];
         for( let i = 0; ( i < nData ); i++ ) {
-            let x = f(), y = f();
-            Data.values[ i ] = [ false, x, y, x * y, Math.log( 2 + x + y )];
+            let a = f(), b = f();
+            Data.values[ i ] = [ false, a, b, a * b, Math.sin( a / b )];
         }
     }
     return Data.values;

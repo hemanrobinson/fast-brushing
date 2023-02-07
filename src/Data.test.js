@@ -9,11 +9,11 @@ it( "initializes the Data function", () => {
 });
 
 it( "returns column names", () => {
-    expect( Data.getColumnNames()).toEqual([ "isSelected", "A", "B", "A + B", "A * B" ]);
+    expect( Data.getColumnNames()).toEqual([ "isSelected", "A", "B", "A * B", "sin( A / B )" ]);
 });
 
 it( "returns domains", () => {
-    expect( Data.getDomain( 100, 0 )).toEqual([ -2, 2 ]);
+    expect( Data.getDomain( 100, 0 )).toEqual([ -1.5, 1.5 ]);
 });
 
 it( "returns values", () => {
