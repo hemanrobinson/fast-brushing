@@ -3,6 +3,12 @@ div {
     text-align: center;
     gap: 10px;
 }
+img {
+    border: 1px solid #939ba1;
+}
+p.center {
+    text-align: center;
+}
 .Description {
     text-align: left;
     max-width: 1000px;
@@ -14,7 +20,7 @@ div {
 }
 .GridControls {
     display: grid;
-    grid-template-columns: auto 200px;
+    grid-template-columns: auto 200px 40px auto 200px;
     align-items: center;
     justify-items: right;
     justify-content: center;
