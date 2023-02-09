@@ -63,7 +63,7 @@ Data.getValues = ( nData ) => {
         Data.values = [];
         for( let i = 0; ( i < nData ); i++ ) {
             let a = f(), b = f();
-            Data.values[ i ] = [ false, a, b, a * b, Math.sin( a / b )];
+            Data.values[ i ] = [ false, a, b, a * b, ( b === 0 ) ? 0 : Math.sin( a / b )];
         }
     }
     return Data.values;
