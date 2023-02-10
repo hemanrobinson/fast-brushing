@@ -51,5 +51,5 @@ it( "draws a Matrix", () => {
         render( <div><canvas width="800" height="800" /><svg width="800" height="800" /></div>, container );
     });
     let div = container.firstChild;
-    Matrix.draw( 200, 200, { current: div }, 1, 1 );
+    Matrix.draw( 200, 200, { current: div }, 1, 1, true );
 });

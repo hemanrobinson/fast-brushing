@@ -81,12 +81,16 @@ const Matrix = ( props ) => {
                     y = j * height;
                 Matrix.selectedRows = ( i === j ) ? [] : Plot.select( x, y, width, height, nData, i + 1, j + 1, { x: x + xDown, y: y + yDown, width: xUp - xDown, height: yUp - yDown });
             }
-            Matrix.draw( width, height, ref, nData, opacity );
+            Matrix.draw( width, height, ref, nData, opacity, false );
+        };
+        const onEnd = ( event ) => {
+            Matrix.draw( width, height, ref, nData, opacity, true );
         };
         const brush = d3.brush()
             .extent([[ 2, 2 ], [ width, height ]])
             .on( "start", onStart )
-            .on( "brush end", onBrush );
+            .on( "brush", onBrush )
+            .on( "end", onEnd );
         cell.call( brush );
         Matrix.brush = brush;
         
@@ -140,13 +144,14 @@ Matrix.clear = () => {
 /**
  * Draws the plots.
  *
- * @param  {number}  width    width in pixels
- * @param  {number}  height   height in pixels
- * @param  {Object}  ref      reference to DIV
- * @param  {number}  nData    number of data values
- * @param  {number}  opacity  alpha
+ * @param  {number}  width          width in pixels
+ * @param  {number}  height         height in pixels
+ * @param  {Object}  ref            reference to DIV
+ * @param  {number}  nData          number of data values
+ * @param  {number}  opacity        alpha
+ * @param  {boolean} isDrawingAll   true iff clearing and redrawing grid and axes
  */
-Matrix.draw = ( width, height, ref, nData, opacity ) => {
+Matrix.draw = ( width, height, ref, nData, opacity, isDrawingAll ) => {
     
     // Initialization.  If no context, do nothing.
     if( !ref ) {
@@ -159,18 +164,18 @@ Matrix.draw = ( width, height, ref, nData, opacity ) => {
         return;
     }
     
-    // Erase the drawing area.
-    g.clearRect( 0, 0, ( nColumns - 1 ) * width, ( nColumns - 1 ) * height );
-    
-    // Draw the grid.
-    g.strokeStyle = "#939ba1";
-    for( let i = 1; ( i < nColumns - 1 ); i++ ) {
-        g.moveTo( i * width + 0.5, 0 );
-        g.lineTo( i * width + 0.5, ( nColumns - 1 ) * height );
-        g.moveTo( 0, i * height + 0.5 );
-        g.lineTo(( nColumns - 1 ) * width, i * height + 0.5 );
+    // If requested, clear the drawing area and draw the grid.
+    if( isDrawingAll ) {
+        g.clearRect( 0, 0, ( nColumns - 1 ) * width, ( nColumns - 1 ) * height );
+        g.strokeStyle = "#939ba1";
+        for( let i = 1; ( i < nColumns - 1 ); i++ ) {
+            g.moveTo( i * width + 0.5, 0 );
+            g.lineTo( i * width + 0.5, ( nColumns - 1 ) * height );
+            g.moveTo( 0, i * height + 0.5 );
+            g.lineTo(( nColumns - 1 ) * width, i * height + 0.5 );
+        }
+        g.stroke();
     }
-    g.stroke();
     
     // Draw the plots and the axes.  On first draw, store the bitmaps.
     let isFirstDraw = !Matrix.bitmaps;
@@ -186,7 +191,9 @@ Matrix.draw = ( width, height, ref, nData, opacity ) => {
 
             // Draw an axis...
             if( i === j ) {
-                Axis.draw( x, y, width, height, canvas, nData, i );
+                if( isDrawingAll ) {
+                    Axis.draw( x, y, width, height, canvas, nData, i );
+                }
             }
 
             // ...or a plot.
@@ -196,9 +203,9 @@ Matrix.draw = ( width, height, ref, nData, opacity ) => {
                         Matrix.bitmaps[ i - 1 ] = [];
                     }
                     Matrix.bitmaps[ i - 1 ][ j - 1 ] =
-                        Plot.draw( x, y, width, height, canvas, nData, i, j, opacity, undefined, Matrix.selectedRows );
+                        Plot.draw( x, y, width, height, canvas, nData, i, j, opacity, Matrix.selectedRows );
                 } else {
-                    Plot.draw( x, y, width, height, canvas, nData, i, j, opacity, Matrix.bitmaps[ i - 1 ][ j - 1 ], Matrix.selectedRows );
+                    Plot.draw( x, y, width, height, canvas, nData, i, j, opacity, Matrix.selectedRows, Matrix.bitmaps[ i - 1 ][ j - 1 ] );
                 }
             }
         }

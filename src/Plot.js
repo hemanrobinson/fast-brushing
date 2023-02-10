@@ -70,11 +70,11 @@ Plot.isWithin = ( point, rect, tol ) => {
  * @param  {number}               i             X column index
  * @param  {number}               j             Y column index
  * @param  {number}               opacity       alpha
+ * @param  {number[]}             selectedRows  Array of indices of selected rows
  * @param  {ImageData|undefined}  imageData     bitmap of deselected points, or undefined if none
- * @param  {number[]|undefined}   selectedRows  Array of indices of selected rows, or undefined if none
  * @return {ImageData}            bitmap of deselected points
  */
-Plot.draw = ( x, y, width, height, canvas, nData, i, j, opacity, imageData, selectedRows ) => {
+Plot.draw = ( x, y, width, height, canvas, nData, i, j, opacity, selectedRows, imageData ) => {
     
     // Initialization.
     const g = canvas.getContext( "2d" ),
