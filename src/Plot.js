@@ -70,7 +70,7 @@ Plot.isWithin = ( point, rect, tol ) => {
  * @param  {number}               i             X column index
  * @param  {number}               j             Y column index
  * @param  {number}               opacity       alpha
- * @param  {number[]}             selectedRows  Array of indices of selected rows
+ * @param  {number[]|undefined}   selectedRows  indices of selected rows, or undefined to use row states from the data
  * @param  {ImageData|undefined}  imageData     bitmap of deselected points, or undefined if none
  * @return {ImageData}            bitmap of deselected points
  */
@@ -120,7 +120,7 @@ Plot.draw = ( x, y, width, height, canvas, nData, i, j, opacity, selectedRows, i
         });
     }
     
-    // ...or add the selected rows from the data.
+    // ...or use row states from the data.
     else {
         let row = 0;
         data.forEach(( datum ) => {
