@@ -37,7 +37,7 @@ const App = () => {
                     onChangeCommitted={( event, value ) => { Matrix.clear(); setNData( App.getPower( value )); }} />
                 <span/>
                 <label>Transparency:</label>
-                <Slider defaultValue={ 0.5 } step={ 0.01 } min={ 0 } max={ 0.99 }
+                <Slider defaultValue={ 0.5 } step={ 0.01 } min={ 0 } max={ 0.95 }
                     valueLabelDisplay="auto"
                     onChangeCommitted={( event, value ) => { Matrix.clear(); setOpacity( 1 - value ); }} />
             </div>
@@ -62,10 +62,10 @@ const App = () => {
                 Colors are chosen to emphasize the data.   Black on white gives maximum emphasis.  The red selection color draws attention.  The grid, being less important, is gray.
                 </p>
                 <p>
-                For the same reason, the brush could also be gray; but usability tests pointed out that the standard selection color is blue (Ho, 2016).  Following standard design patterns eases the user's learning curve.
+                For the same reason, the brush could be gray; but usability tests pointed out that the standard selection color is blue (Ho, 2016).  Following standard design patterns eases the user's learning curve.
                 </p>
                 <p>
-                The <a href="https://github.com/d3/d3-brush">d3 brush</a> is <em>persistent</em> rather than <em>transient</em>.  A persistent brush reduces errors, by enabling the user to resize the brush (Tidwell, 2010).  A persistent brush also helps users share the path of their exploration, through screen shots for example.
+                The <a href="https://github.com/d3/d3-brush">d3 brush</a> is <em>persistent</em> rather than <em>transient</em>.  A persistent brush reduces errors, by enabling the user to resize the brush (Tidwell, 2010).  A persistent brush also helps users share their explorations, through screen shots for example.
                 </p>
                 <p>
                 Transparency shows density (Wegman and Luo, 2002).  This gives scatter plots the power of contour plots, while still displaying individual points.
@@ -80,7 +80,7 @@ const App = () => {
                 <li>Selected row indices are cached, so that drawing selected points iterates over a short list, not the entire data set.</li>
                 </ol>
                 <p>
-                Performance varies, but a fast box can display 100,000 points per plot.  So in a 4x4 matrix, we can brush 1.2 million points.  As our hardware improves, we'll see this number grow.
+                Performance varies, but on a fast box, we can display 100,000 points per plot.  So in a 4x4 matrix, we can brush 1.2 million points.  As our hardware improves, we'll see these numbers grow.
                 </p>
                 <br/>
                 <h2>References</h2>

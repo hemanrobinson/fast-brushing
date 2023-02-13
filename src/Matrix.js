@@ -38,7 +38,8 @@ const Matrix = ( props ) => {
         height = 200,
         nColumns = Data.getColumnNames().length,
         totalWidth = ( nColumns - 1 ) * width,
-        totalHeight = ( nColumns - 1 ) * height;
+        totalHeight = ( nColumns - 1 ) * height,
+        brushNodeOffset = 4;
     
     // Set hook to select and draw on mounting.
     useEffect(() => {
@@ -48,7 +49,7 @@ const Matrix = ( props ) => {
         svg.selectAll( "*" ).remove();
         const cell = svg.append( "g" )
             .selectAll( "g" )
-            .data( d3.cross(d3.range( nColumns - 1 ), d3.range( nColumns - 1 )))
+            .data( d3.cross( d3.range( nColumns - 1 ), d3.range( nColumns - 1 )))
             .join( "g" )
             .attr( "transform", ([ i, j ]) => `translate(${ i * width },${ j * height })` );
             
@@ -69,8 +70,8 @@ const Matrix = ( props ) => {
             Matrix.selectedRows = [];
             Data.deselectAll();
             if( event.selection ) {
-                let offsetX = event.sourceEvent ? event.sourceEvent.offsetX : 400,
-                    offsetY = event.sourceEvent ? event.sourceEvent.offsetY : 200,
+                let offsetX = event.sourceEvent ? event.sourceEvent.offsetX : width * Math.floor( brushNodeOffset / 4 ),
+                    offsetY = event.sourceEvent ? event.sourceEvent.offsetY : height * ( brushNodeOffset % 4 ),
                     xDown = event.selection[ 0 ][ 0 ],
                     yDown = event.selection[ 0 ][ 1 ],
                     xUp = event.selection[ 1 ][ 0 ],
@@ -95,9 +96,9 @@ const Matrix = ( props ) => {
         Matrix.brush = brush;
         
         // Initialize the brush.
-        Matrix.brushNode = svg.node().firstChild.childNodes[ 9 ];
+        Matrix.brushNode = svg.node().firstChild.childNodes[ brushNodeOffset ];
         const brushCell = d3.select( Matrix.brushNode );
-        brushCell.call( brush.move, [[ 60, 60 ], [ 100, 100 ]]);
+        brushCell.call( brush.move, [[ 40, 40 ], [ 80, 80 ]]);
     });
     
     // Return the component.
