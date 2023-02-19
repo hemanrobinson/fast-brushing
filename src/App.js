@@ -9,7 +9,7 @@ import cleveland from './cleveland.png';
 const App = () => {
     
     // Create state.
-    const nDataDefault = 10;
+    const nDataDefault = 11;
     const [ nData, setNData ] = useState( App.getPower( nDataDefault ));
     const [ opacity, setOpacity ] = useState( 0.5 );
     
