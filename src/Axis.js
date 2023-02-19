@@ -28,12 +28,12 @@ Axis.draw = ( x, y, width, height, canvas, nData, index ) => {
         
     // Draw the column label.
     g.fillStyle = "#000000";
-    g.fontSize = "14px";
+    g.font = "14px Verdana";
     let s = columnNames[ index ];
     g.fillText( s, x + width / 2 - g.measureText( s ).width / 2, y + height - height / 2 + 4 );
     
     // Draw the minimum and maximum.
-    g.fontSize = "10px";
+    g.font = "12px Verdana";
     s = ( "" + Data.getDomain( nData, index )[ 0 ]).slice( 0, 4 );
     g.fillText( s, x + 4, y + height - 4 );
     s = ( "" + Data.getDomain( nData, index )[ 1 ]).slice( 0, 3 );

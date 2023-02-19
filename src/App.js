@@ -34,18 +34,15 @@ const App = () => {
                 <label>Points per Plot:</label>
                 <Slider defaultValue={ nDataDefault } step={ 1 } min={ 6 } max={ 15 }
                     valueLabelDisplay="auto" marks valueLabelFormat={( value ) => { let s = App.getPower( value ); if( s >= 10000 ) s = s / 1000 + "K"; return s }}
-                    onChangeCommitted={( event, value ) => { Matrix.clear(); setNData( App.getPower( value )); }} />
+                    onChange={( event, value ) => { Matrix.clear(); setNData( App.getPower( value )); }} />
                 <span/>
                 <label>Transparency:</label>
                 <Slider defaultValue={ 0.5 } step={ 0.01 } min={ 0 } max={ 0.95 }
                     valueLabelDisplay="auto"
-                    onChangeCommitted={( event, value ) => { Matrix.clear(); setOpacity( 1 - value ); }} />
+                    onChange={( event, value ) => { Matrix.clear(); setOpacity( 1 - value ); }} />
             </div>
             <div className="Description">
                 <h2>Design Notes</h2>
-                <p>
-                This implementation uses code from the <a href="https://observablehq.com/collection/@d3/d3-brush">d3-brush collection</a>.
-                </p>
                 <p className="center">
                     <a href="https://www.datavis.ca/milestones/index.php?group=1975%2B&mid=ms259"><img title="Dr. Richard Becker" alt="Dr. Richard Becker" src={becker}/></a>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -53,16 +50,16 @@ const App = () => {
                     <br />
                 </p>
                 <p>
-                This design derives from the <a href="http://www.sci.utah.edu/~kpotter/Library/Papers/becker:1987:BS/index.html">scatter plot matrix</a> of <a href="https://www.researchgate.net/scientific-contributions/Richard-A-Becker-7076158">Richard Becker</a> and <a href="https://www.cerias.purdue.edu/site/people/faculty/view/709">William Cleveland</a> (Becker and Cleveland, 1987).
+                This design derives from the <a href="http://www.sci.utah.edu/~kpotter/Library/Papers/becker:1987:BS/index.html">scatter plot matrix</a> of <a href="https://www.researchgate.net/scientific-contributions/Richard-A-Becker-7076158">Richard Becker</a> and <a href="https://www.cerias.purdue.edu/site/people/faculty/view/709">William Cleveland</a> (Becker and Cleveland, 1987).  This implementation uses code from the <a href="https://observablehq.com/collection/@d3/d3-brush">d3-brush collection</a>.
                 </p>
                 <p>
-                The goal of this graph is not to locate points, but to find patterns in the data.  So the scatter plot matrix displays no axes, only data ranges.  This maximizes Tufte's "Data-Ink Ratio" (Tufte, 1983).
+                The goal of this graph is not to locate points, but to find patterns in the data.  Therefore, the matrix displays no axes, only data ranges.  This increases Tufte's "Data-Ink Ratio" (Tufte, 1983).
                 </p>
                 <p>
-                Colors are chosen to emphasize the data.   Black on white gives maximum emphasis.  The red selection color draws attention.  The grid, being less important, is gray.
+                Colors emphasize the data.   Black on white gives maximum emphasis.  The red selection color draws attention.  The grid, being less important, is gray.
                 </p>
                 <p>
-                For the same reason, the brush could be gray; but usability tests pointed out that the standard selection color is blue (Ho, 2016).  Following standard design patterns eases the user's learning curve.
+                For the same reason, the brush could be gray.  However, usability tests pointed out that blue is the standard selection color (Ho, 2016).  Following standards eases the user's learning curve.
                 </p>
                 <p>
                 The <a href="https://github.com/d3/d3-brush">d3 brush</a> is <em>persistent</em> rather than <em>transient</em>.  A persistent brush reduces errors, by enabling the user to resize the brush (Tidwell, 2010).  A persistent brush also helps users share their explorations, through screen shots for example.
@@ -74,10 +71,10 @@ const App = () => {
                 The following optimizations improve performance:
                 </p>
                 <ol>
-                <li>Drawing on a single CANVAS avoids the need to allocate thousands of SVG objects.</li>
-                <li>Each data point is drawn as a single pixel, to display large data sets with minimal drawing code.</li>
-                <li>Deselected points are cached, so that drawing a plot requires only a fast copy, then drawing the selected points.</li>
-                <li>Selected row indices are cached, so that drawing selected points iterates over a short list, not the entire data set.</li>
+                <li>Drawing in a single canvas element avoids the need to allocate thousands of svg elements.</li>
+                <li>Each row of data is drawn as a single pixel, to display large data sets with minimal drawing code.</li>
+                <li>Deselected points are cached in bitmaps, so that drawing a plot requires only a fast copy, then drawing the selected points.</li>
+                <li>Selected row indices are cached in an Array, so that drawing selected points iterates over a short list, not the entire data set.</li>
                 </ol>
                 <p>
                 Performance varies, but on a fast box, we can display 100,000 points per plot.  So in a 4x4 matrix, we can brush 1.2 million points.  As our hardware improves, we'll see these numbers grow.
