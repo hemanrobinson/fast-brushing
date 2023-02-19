@@ -74,7 +74,7 @@ const App = () => {
                 <li>Drawing in a single canvas element avoids the need to allocate thousands of svg elements.</li>
                 <li>Each row of data is drawn as a single pixel, to display large data sets with minimal drawing code.</li>
                 <li>Deselected points are cached in bitmaps, so that drawing a plot requires only a fast copy, then drawing the selected points.</li>
-                <li>Selected row indices are cached in an Array, so that drawing selected points iterates over a short list, not the entire data set.</li>
+                <li>Selected row indices are cached in an array, so that drawing selected points iterates over a short list, not the entire data set.</li>
                 </ol>
                 <p>
                 Performance varies, but on a fast box, we can display 100,000 points per plot.  So in a 4x4 matrix, we can brush 1.2 million points.  As our hardware improves, we'll see these numbers grow.
