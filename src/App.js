@@ -50,10 +50,10 @@ const App = () => {
                     <br />
                 </p>
                 <p>
-                This design derives from the <a href="http://www.sci.utah.edu/~kpotter/Library/Papers/becker:1987:BS/index.html">scatter plot matrix</a> of <a href="https://www.researchgate.net/scientific-contributions/Richard-A-Becker-7076158">Richard Becker</a> and <a href="https://www.cerias.purdue.edu/site/people/faculty/view/709">William Cleveland</a> (Becker and Cleveland, 1987).  This implementation uses code from the <a href="https://observablehq.com/collection/@d3/d3-brush">d3-brush collection</a>.
+                This design derives from the <a href="http://www.sci.utah.edu/~kpotter/Library/Papers/becker:1987:BS/index.html">scatter plot matrix</a> of <a href="https://www.researchgate.net/scientific-contributions/Richard-A-Becker-7076158">Richard Becker</a> and <a href="https://www.cerias.purdue.edu/site/people/faculty/view/709">William Cleveland</a> (Becker and Cleveland, 1987).  The implementation uses code from the <a href="https://observablehq.com/collection/@d3/d3-brush">d3-brush collection</a>.
                 </p>
                 <p>
-                The goal of this graph is not to locate points, but to find patterns in the data.  Therefore, the matrix displays no axes, only data ranges.  This increases Tufte's "Data-Ink Ratio" (Tufte, 1983).
+                The goal of the scatter plot matrix is not to locate points, but to find patterns in the data.  Therefore, there are no axes, only data ranges.  This increases Tufte's "Data-Ink Ratio" (Tufte, 1983).
                 </p>
                 <p>
                 Colors emphasize the data.   Black on white gives maximum emphasis.  The red selection color draws attention.  The grid, being less important, is gray.
@@ -62,10 +62,10 @@ const App = () => {
                 For the same reason, the brush could be gray.  However, usability tests pointed out that blue is the standard selection color (Ho, 2016).  Following standards eases the user's learning curve.
                 </p>
                 <p>
-                The <a href="https://github.com/d3/d3-brush">d3 brush</a> is <em>persistent</em> rather than <em>transient</em>.  A persistent brush reduces errors, by enabling the user to resize the brush (Tidwell, 2010).  A persistent brush also helps users share their explorations, through screen shots for example.
+                <a href="https://github.com/d3/d3-brush">D3's brush</a> is <em>persistent</em> rather than <em>transient</em>.  A persistent brush reduces errors, by enabling the user to resize the brush (Tidwell, 2010).  A persistent brush also helps users share their explorations, through screen shots for example.
                 </p>
                 <p>
-                Transparency shows density (Wegman and Luo, 2002).  This gives scatter plots the power of contour plots, while still displaying individual points.
+                Transparency shows density.  This gives scatter plots the expressive power of contour plots, while still displaying individual points (Wegman and Luo, 2002).
                 </p>
                 <p>
                 The following optimizations improve performance:
@@ -73,8 +73,8 @@ const App = () => {
                 <ol>
                 <li>Drawing in a single canvas element avoids the need to allocate thousands of svg elements.</li>
                 <li>Each row of data is drawn as a single pixel, to display large data sets with minimal drawing code.</li>
-                <li>Deselected points are cached in bitmaps, so that drawing a plot requires only a fast copy, then drawing the selected points.</li>
-                <li>Selected row indices are cached in an array, so that drawing selected points iterates over a short list, not the entire data set.</li>
+                <li>Deselected points are cached in bitmaps, so drawing a plot requires only a fast copy, then drawing the selected points.</li>
+                <li>Selected row indices are cached in an array, so drawing selected points iterates over a short list, not the entire data set.</li>
                 </ol>
                 <p>
                 Performance varies, but on a fast box, we can display 100,000 points per plot.  So in a 4x4 matrix, we can brush 1.2 million points.  As our hardware improves, we'll see these numbers grow.
