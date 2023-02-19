@@ -9,7 +9,7 @@ import cleveland from './cleveland.png';
 const App = () => {
     
     // Create state.
-    const nDataDefault = 12;
+    const nDataDefault = 10;
     const [ nData, setNData ] = useState( App.getPower( nDataDefault ));
     const [ opacity, setOpacity ] = useState( 0.5 );
     
@@ -32,7 +32,7 @@ const App = () => {
             </div>
             <div className="GridControls">
                 <label>Points per Plot:</label>
-                <Slider defaultValue={ nDataDefault } step={ 1 } min={ 6 } max={ 15 }
+                <Slider defaultValue={ nDataDefault } step={ 1 } min={ 9 } max={ 15 }
                     valueLabelDisplay="auto" marks valueLabelFormat={( value ) => { let s = App.getPower( value ); if( s >= 10000 ) s = s / 1000 + "K"; return s }}
                     onChange={( event, value ) => { Matrix.clear(); setNData( App.getPower( value )); }} />
                 <span/>
