@@ -8,19 +8,19 @@ import * as d3 from 'd3';
  */
 const Data = ( props ) => {
 };
-
+ 
 /**
- * True iff data row is selected.
+ * Array of indices of selected rows.
  *
- * @type {boolean[]}
+ * @type {number[]}
  */
-Data.isSelected = [];
+Data.selectedRows = [];
 
 /**
  * Deselects all rows.
  */
 Data.deselectAll = () => {
-    Data.isSelected.fill( false );
+    Data.selectedRows = [];
 };
 
 /**
@@ -29,7 +29,7 @@ Data.deselectAll = () => {
  * @return {string[]}  column names
  */
 Data.getColumnNames = () => {
-    return [ "isSelected", "A", "B", "A * B", "sin( A / B )"];
+    return [ "A", "B", "A * B", "sin( A / B )"];
 };
 
 /**
@@ -63,7 +63,7 @@ Data.getValues = ( nData ) => {
         Data.values = [];
         for( let i = 0; ( i < nData ); i++ ) {
             let a = f(), b = f();
-            Data.values[ i ] = [ false, a, b, a * b, ( b === 0 ) ? 0 : Math.sin( a / b )];
+            Data.values[ i ] = [ a, b, a * b, ( b === 0 ) ? 0 : Math.sin( a / b )];
         }
     }
     return Data.values;

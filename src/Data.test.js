@@ -5,11 +5,11 @@ it( "invokes the Data function", () => {
 });
 
 it( "initializes the Data function", () => {
-    expect( Data.isSelected ).toEqual([]);
+    expect( Data.selectedRows ).toEqual([]);
 });
 
 it( "returns column names", () => {
-    expect( Data.getColumnNames()).toEqual([ "isSelected", "A", "B", "A * B", "sin( A / B )" ]);
+    expect( Data.getColumnNames()).toEqual([ "A", "B", "A * B", "sin( A / B )" ]);
 });
 
 it( "returns domains", () => {

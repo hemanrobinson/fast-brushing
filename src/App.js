@@ -9,9 +9,10 @@ import cleveland from './cleveland.png';
 const App = () => {
     
     // Create state.
-    const nDataDefault = 11;
+    const nDataDefault = 14;
+    const transparencyDefault = 0.5;
     const [ nData, setNData ] = useState( App.getPower( nDataDefault ));
-    const [ opacity, setOpacity ] = useState( 0.5 );
+    const [ opacity, setOpacity ] = useState( 1 - transparencyDefault );
     
     // Return the component.
     return (
@@ -32,12 +33,12 @@ const App = () => {
             </div>
             <div className="GridControls">
                 <label>Points per Plot:</label>
-                <Slider defaultValue={ nDataDefault } step={ 1 } min={ 9 } max={ 15 }
-                    valueLabelDisplay="auto" marks valueLabelFormat={( value ) => { let s = App.getPower( value ); if( s >= 10000 ) s = s / 1000 + "K"; return s }}
+                <Slider defaultValue={ nDataDefault } step={ 1 } min={ 9 } max={ 18 }
+                    valueLabelDisplay="auto" marks valueLabelFormat={( value ) => { let s = App.getPower( value ); if( s >= 1000000 ) { s = s / 1000000 + "M"; } else if( s >= 1000 ) { s = s / 1000 + "K" }; return s }}
                     onChange={( event, value ) => { Matrix.clear(); setNData( App.getPower( value )); }} />
                 <span/>
                 <label>Transparency:</label>
-                <Slider defaultValue={ 0.5 } step={ 0.01 } min={ 0 } max={ 0.95 }
+                <Slider defaultValue={ transparencyDefault } step={ 0.01 } min={ 0 } max={ 0.99 }
                     valueLabelDisplay="auto"
                     onChange={( event, value ) => { Matrix.clear(); setOpacity( 1 - value ); }} />
             </div>
@@ -65,19 +66,21 @@ const App = () => {
                 <a href="https://github.com/d3/d3-brush">D3's brush</a> is <em>persistent</em> rather than <em>transient</em>.  A persistent brush reduces errors, by enabling the user to resize the brush (Tidwell, 2010).  A persistent brush also helps users share their explorations, through screen shots for example.
                 </p>
                 <p>
-                Transparency shows density.  This gives scatter plots the expressive power of contour plots, while still displaying individual points (Wegman and Luo, 2002).
+                Transparency shows density, via <a href="https://en.wikipedia.org/wiki/Alpha_compositing">alpha blending</a>.  This gives scatter plots the expressive power of contour plots, while still displaying individual points (Wegman and Luo, 2002).
                 </p>
                 <p>
                 The following optimizations improve performance:
                 </p>
                 <ol>
-                <li>Drawing in a single canvas element avoids the need to allocate thousands of svg elements.</li>
+                <li>Drawing in a single CANVAS element avoids the need to allocate thousands of SVG elements.</li>
                 <li>Each row of data is drawn as a single pixel, to display large data sets with minimal drawing code.</li>
-                <li>Deselected points are cached in bitmaps, so drawing a plot requires only a fast copy, then drawing the selected points.</li>
-                <li>Selected row indices are cached in an array, so drawing selected points iterates over a short list, not the entire data set.</li>
+                <li>Deselected points are cached, so drawing a plot requires only a fast <a href="https://en.wikipedia.org/wiki/Bit_blit">bit blit</a>, then drawing the selected points.</li>
+                <li>Selected row indices are cached, so drawing selected points iterates over a short list, not the entire data set.</li>
+                <li>Pixel coordinates are cached, per <a href="https://observablehq.com/@fil">Fil</a>'s suggestion, to speed drawing and selection.</li>
+                <li>The brushing interaction is <a href="https://levelup.gitconnected.com/debounce-in-javascript-improve-your-applications-performance-5b01855e086">debounced</a>, also per <a href="https://observablehq.com/@fil">Fil</a>'s suggestion, to improve drawing for large data sets.</li>
                 </ol>
                 <p>
-                Performance varies, but on a fast box, we can display 100,000 points per plot.  So in a 4x4 matrix, we can brush 1.2 million points.  As our hardware improves, we'll see these numbers grow.
+                Performance varies, but most desktops can display hundreds of thousands of points per plot.  So a 4x4 matrix can brush several million points.  As our hardware improves, we'll see these numbers grow.
                 </p>
                 <br/>
                 <h2>References</h2>

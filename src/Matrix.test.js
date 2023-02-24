@@ -23,15 +23,12 @@ afterEach(() => {
 
 it( "initializes a Matrix", () => {
     expect( Matrix.bitmaps ).toBe( undefined );
-    expect( Matrix.selectedRows ).toEqual([]);
-    expect( Matrix.brush ).toBe( undefined );
     expect( Matrix.brushNode ).toBe( undefined );
 });
 
 it( "clears data structures", () => {
     Matrix.clear();
     expect( Matrix.bitmaps ).toBe( undefined );
-    expect( Matrix.selectedRows ).toEqual([]);
     expect( Matrix.brushNode ).toBe( undefined );
 });
 
@@ -51,5 +48,6 @@ it( "draws a Matrix", () => {
         render( <div><canvas width="800" height="800" /><svg width="800" height="800" /></div>, container );
     });
     let div = container.firstChild;
+    Matrix.scaled = [[], [], [], []];
     Matrix.draw( 200, 200, { current: div }, 1, 1, true );
 });

@@ -37,52 +37,126 @@ const Matrix = ( props ) => {
         width = 200,
         height = 200,
         nColumns = Data.getColumnNames().length,
-        totalWidth = ( nColumns - 1 ) * width,
-        totalHeight = ( nColumns - 1 ) * height,
+        data = Data.getValues( nData ),
+        totalWidth = nColumns * width,
+        totalHeight = nColumns * height,
         brushNodeOffset = 4;
+        
+    /**
+     * Returns a function, that, as long as it continues to be invoked, will not be triggered.
+     * The function will be called after it stops being called for `wait` milliseconds.
+     *
+     * From https://levelup.gitconnected.com/debounce-in-javascript-improve-your-applications-performance-5b01855e086.
+     *
+     * @param func  function
+     * @param wait  delay, in milliseconds
+     * @return debounced function
+     */
+    const debounce = ( func, wait ) => {
+        let timeout;
+        return function executedFunction( ...args ) {
+            const later = () => {
+                clearTimeout( timeout );
+                func( ...args );
+            };
+            clearTimeout( timeout );
+            timeout = setTimeout( later, wait );
+        };
+    };
+        
+    // Cache scaled coordinates.
+    Matrix.scaled = [];
+    let scale = [];
+    for( let i = 0; ( i < nColumns ); i++ ) {
+        Matrix.scaled[ i ] = new Uint16Array( nData );
+        let x = i * width;
+        scale[ i ] = d3.scaleLinear().domain( Data.getDomain( nData, i )).range([ x + Plot.padding, x + width - Plot.padding ]);
+    }
+    data.forEach(( datum, row ) => {
+        for( let i = 0; ( i < nColumns ); i++ ) {
+            let x = i * width;
+            Matrix.scaled[ i ][ row ] = Math.round( scale[ i ]( datum[ i ]) - x );
+        }
+    });
     
     // Set hook to select and draw on mounting.
     useEffect(() => {
         
         // Create the matrix (after https://observablehq.com/@d3/brushable-scatterplot-matrix?collection=@d3/d3-brush).
         const svg = d3.select( ref.current.childNodes[ 1 ]);
-        svg.selectAll( "*" ).remove();
         const cell = svg.append( "g" )
             .selectAll( "g" )
-            .data( d3.cross( d3.range( nColumns - 1 ), d3.range( nColumns - 1 )))
+            .data( d3.cross( d3.range( nColumns ), d3.range( nColumns )))
             .join( "g" )
             .attr( "transform", ([ i, j ]) => `translate(${ i * width },${ j * height })` );
             
         // Create the brush.
         const onStart = ( event ) => {
-            if( !event.sourceEvent ) {
-                return;
-            }
-            const target = event.sourceEvent.target.parentNode;
-            if( Matrix.brushNode !== target ) {
-                d3.select( Matrix.brushNode ).call( brush.move, null );
-                Matrix.brushNode = target;
-            }
-            Matrix.selectedRows = [];
-            Data.deselectAll();
-        };
-        const onBrush = ( event ) => {
-            Matrix.selectedRows = [];
-            Data.deselectAll();
-            if( event.selection ) {
-                let offsetX = event.sourceEvent ? event.sourceEvent.offsetX : width * Math.floor( brushNodeOffset / 4 ),
-                    offsetY = event.sourceEvent ? event.sourceEvent.offsetY : height * ( brushNodeOffset % 4 ),
-                    xDown = event.selection[ 0 ][ 0 ],
+            if( event.sourceEvent ) {
+                const target = event.sourceEvent.target.parentNode;
+                if( Matrix.brushNode !== target ) {
+                    d3.select( Matrix.brushNode ).call( brush.move, null );
+                    Matrix.brushNode = target;
+                    Data.deselectAll();
+                } else if( event.selection ) {
+                    const xDown = event.selection[ 0 ][ 0 ],
                     yDown = event.selection[ 0 ][ 1 ],
                     xUp = event.selection[ 1 ][ 0 ],
-                    yUp = event.selection[ 1 ][ 1 ],
-                    i = Math.floor( offsetX / width ),
+                    yUp = event.selection[ 1 ][ 1 ];
+                    let offsetX, offsetY;
+                    if( event.sourceEvent.touches ) {
+                        const touch = event.sourceEvent.touches[ 0 ];
+                        offsetX = touch.clientX - Matrix.canvas.getBoundingClientRect().x;
+                        offsetY = touch.clientY - Matrix.canvas.getBoundingClientRect().y;
+                    } else {
+                        offsetX = event.sourceEvent.offsetX;
+                        offsetY = event.sourceEvent.offsetY;
+                    }
+                    let i = Math.floor( offsetX / width ),
                     j = Math.floor( offsetY / height ),
                     x = i * width,
                     y = j * height;
-                Matrix.selectedRows = ( i === j ) ? [] : Plot.select( x, y, width, height, nData, i + 1, j + 1, { x: x + xDown, y: y + yDown, width: xUp - xDown, height: yUp - yDown });
+                    if( !Plot.isWithin({ x: offsetX, y : offsetY }, { x: x + xDown, y: y + yDown, width: xUp - xDown, height: yUp - yDown })) {
+                        Data.deselectAll();
+                    }
+                }
             }
-            Matrix.draw( width, height, ref, nData, opacity, false );
+        };
+        const debouncedDraw = debounce( Matrix.draw, 1 );
+        const onBrush = ( event ) => {
+            if( event.selection ) {
+                const xDown = event.selection[ 0 ][ 0 ],
+                    yDown = event.selection[ 0 ][ 1 ],
+                    xUp = event.selection[ 1 ][ 0 ],
+                    yUp = event.selection[ 1 ][ 1 ];
+                let offsetX, offsetY;
+                if( event.sourceEvent ) {
+                    if( event.sourceEvent.touches ) {
+                        const touch = event.sourceEvent.touches[ 0 ];
+                        offsetX = touch.clientX - Matrix.canvas.getBoundingClientRect().x;
+                        offsetY = touch.clientY - Matrix.canvas.getBoundingClientRect().y;
+                    } else {
+                        offsetX = event.sourceEvent.offsetX;
+                        offsetY = event.sourceEvent.offsetY;
+                    }
+                } else {
+                    offsetX = width * Math.floor( brushNodeOffset / 4 );
+                    offsetY = height * ( brushNodeOffset % 4 );
+                }
+                let i = Math.floor( offsetX / width ),
+                j = Math.floor( offsetY / height ),
+                x = i * width,
+                y = j * height;
+                if( i === j ) {
+                    Data.deselectAll();
+                } else {
+                    Data.selectedRows = Plot.select( x, y, width, height, i, j, Matrix.scaled, { x: x + xDown, y: y + yDown, width: xUp - xDown, height: yUp - yDown });
+                    if( Matrix.bitmaps && Matrix.bitmaps[ i ]) {
+                        Plot.draw( x, y, width, height, i, j, Matrix.scaled, ref.current.firstChild, opacity, Data.selectedRows, Matrix.bitmaps[ i ][ j ]);
+                    }
+                }
+            }
+            debouncedDraw( width, height, ref, nData, opacity, false );
         };
         const onEnd = ( event ) => {
             Matrix.draw( width, height, ref, nData, opacity, true );
@@ -93,7 +167,6 @@ const Matrix = ( props ) => {
             .on( "brush", onBrush )
             .on( "end", onEnd );
         cell.call( brush );
-        Matrix.brush = brush;
         
         // Initialize the brush.
         Matrix.brushNode = svg.node().firstChild.childNodes[ brushNodeOffset ];
@@ -113,37 +186,29 @@ const Matrix = ( props ) => {
 Matrix.bitmaps = undefined;
  
 /**
- * Array of indices of selected rows, cached for optimization.
- *
- * @type {number[]}
- */
-Matrix.selectedRows = [];
- 
-/**
- * Brush, or undefined if none.
- *
- * @type {d3.brush|undefined}
- */
-Matrix.brush = undefined;
- 
-/**
  * Node containing a brush, or undefined if none.
  *
  * @type {Node|undefined}
  */
 Matrix.brushNode = undefined;
+ 
+/**
+ * Scaled coordinates, or undefined if none.
+ *
+ * @type {Uint16Array[]|undefined}}
+ */
+Matrix.scaled = undefined;
 
 /**
  * Clears data structures.
  */
 Matrix.clear = () => {
-    Matrix.selectedRows = [];
     Data.deselectAll();
     Matrix.bitmaps = undefined;
 };
 
 /**
- * Draws the plots.
+ * Draws the grid, the plots, and the axes.
  *
  * @param  {number}  width          width in pixels
  * @param  {number}  height         height in pixels
@@ -167,13 +232,13 @@ Matrix.draw = ( width, height, ref, nData, opacity, isDrawingAll ) => {
     
     // If requested, clear the drawing area and draw the grid.
     if( isDrawingAll ) {
-        g.clearRect( 0, 0, ( nColumns - 1 ) * width, ( nColumns - 1 ) * height );
+        g.clearRect( 0, 0, nColumns * width, nColumns * height );
         g.strokeStyle = "#939ba1";
-        for( let i = 1; ( i < nColumns - 1 ); i++ ) {
+        for( let i = 1; ( i < nColumns ); i++ ) {
             g.moveTo( i * width + 0.5, 0 );
-            g.lineTo( i * width + 0.5, ( nColumns - 1 ) * height );
+            g.lineTo( i * width + 0.5, nColumns * height );
             g.moveTo( 0, i * height + 0.5 );
-            g.lineTo(( nColumns - 1 ) * width, i * height + 0.5 );
+            g.lineTo( nColumns * width, i * height + 0.5 );
         }
         g.stroke();
     }
@@ -183,12 +248,12 @@ Matrix.draw = ( width, height, ref, nData, opacity, isDrawingAll ) => {
     if( isFirstDraw ) {
         Matrix.bitmaps = [];
     }        
-    for( let i = 1; ( i < nColumns ); i++ ) {
-        for( let j = 1; ( j < nColumns ); j++ ) {
+    for( let i = 0; ( i < nColumns ); i++ ) {
+        for( let j = 0; ( j < nColumns ); j++ ) {
 
             // Get the position.
-            let x = ( i - 1 ) * width,
-                y = ( j - 1 ) * height;
+            let x = i * width,
+                y = j * height;
 
             // Draw an axis...
             if( i === j ) {
@@ -200,13 +265,13 @@ Matrix.draw = ( width, height, ref, nData, opacity, isDrawingAll ) => {
             // ...or a plot.
             else {
                 if( isFirstDraw ) {
-                    if( Matrix.bitmaps[ i - 1 ] === undefined ) {
-                        Matrix.bitmaps[ i - 1 ] = [];
+                    if( Matrix.bitmaps[ i ] === undefined ) {
+                        Matrix.bitmaps[ i ] = [];
                     }
-                    Matrix.bitmaps[ i - 1 ][ j - 1 ] =
-                        Plot.draw( x, y, width, height, canvas, nData, i, j, opacity, Matrix.selectedRows );
+                    Matrix.bitmaps[ i ][ j ] =
+                        Plot.draw( x, y, width, height, i, j, Matrix.scaled, canvas, opacity, Data.selectedRows );
                 } else {
-                    Plot.draw( x, y, width, height, canvas, nData, i, j, opacity, Matrix.selectedRows, Matrix.bitmaps[ i - 1 ][ j - 1 ] );
+                    Plot.draw( x, y, width, height, i, j, Matrix.scaled, canvas, opacity, Data.selectedRows, Matrix.bitmaps[ i ][ j ]);
                 }
             }
         }
