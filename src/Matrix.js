@@ -82,8 +82,9 @@ const Matrix = ( props ) => {
     // Set hook to select and draw on mounting.
     useEffect(() => {
         
-        // Create the matrix (after https://observablehq.com/@d3/brushable-scatterplot-matrix?collection=@d3/d3-brush).
+        // Create the SVG elements (after https://observablehq.com/@d3/brushable-scatterplot-matrix?collection=@d3/d3-brush).
         const svg = d3.select( ref.current.childNodes[ 1 ]);
+        svg.selectAll( "*" ).remove();
         const cell = svg.append( "g" )
             .selectAll( "g" )
             .data( d3.cross( d3.range( nColumns ), d3.range( nColumns )))
