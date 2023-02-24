@@ -39,9 +39,8 @@ Data.getColumnNames = () => {
  * @param  {number}    index  column index
  * @return {number[]}  domain of specified column
  */
-Data.getDomain = ( nData, i ) => {
-//  return [ d3.min( Data.getValues( nData ), d => d[ index ]), d3.max( Data.getValues( nData ), d => d[ index ])];
-    return [ -1.5, 1.5 ];   // consistently spreads the data
+Data.getDomain = ( nData, index ) => {
+  return [ d3.min( Data.getValues( nData ), d => d[ index ]), d3.max( Data.getValues( nData ), d => d[ index ])];
 };
 
 /**
