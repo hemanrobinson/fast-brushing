@@ -34,9 +34,9 @@ Axis.draw = ( x, y, width, height, canvas, nData, index ) => {
     
     // Draw the minimum and maximum.
     g.font = "12px Verdana";
-    s = ( "" + Data.getDomain( nData, index )[ 0 ]).slice( 0, 4 );
+    s = "" + Math.round( 10 * Data.getDomain( nData, index )[ 0 ]) / 10;
     g.fillText( s, x + 4, y + height - 4 );
-    s = ( "" + Data.getDomain( nData, index )[ 1 ]).slice( 0, 3 );
+    s = "" + Math.round( 10 * Data.getDomain( nData, index )[ 1 ]) / 10;
     g.fillText( s, x + width - 3 - g.measureText( s ).width, y + 12 );
 };
 
