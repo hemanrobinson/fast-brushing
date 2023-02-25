@@ -83,6 +83,7 @@ const Matrix = ( props ) => {
     useEffect(() => {
         
         // Create the SVG elements (after https://observablehq.com/@d3/brushable-scatterplot-matrix?collection=@d3/d3-brush).
+        Matrix.canvas = d3.select( ref.current.childNodes[ 0 ]);
         const svg = d3.select( ref.current.childNodes[ 1 ]);
         svg.selectAll( "*" ).remove();
         const cell = svg.append( "g" )
@@ -185,6 +186,13 @@ const Matrix = ( props ) => {
  * @type {ImageData[][]|undefined}
  */
 Matrix.bitmaps = undefined;
+
+/**
+ * CANVAS element, or undefined if none.
+ *
+ * @type {Element|undefined}
+ */
+Matrix.canvas = undefined;
  
 /**
  * Node containing a brush, or undefined if none.
