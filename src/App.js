@@ -30,7 +30,6 @@ const App = () => {
                 </p>
                 <Matrix nData={nData} opacity={opacity} />
                 <br />
-                <textarea id="debug" rows="10" cols="100"></textarea>
             </div>
             <div className="GridControls">
                 <label>Points per Plot:</label>

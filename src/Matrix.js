@@ -133,8 +133,6 @@ const Matrix = ( props ) => {
                     yUp = event.selection[ 1 ][ 1 ];
                 let offsetX, offsetY;
                 if( event.sourceEvent ) {
-                    const textarea = document.getElementById( "debug" );
-                    textarea.value += "onBrush " + event.sourceEvent.touches + "\n";
                     if( event.sourceEvent.touches ) {
                         const touch = event.sourceEvent.touches[ 0 ];
                         offsetX = touch.clientX - Matrix.canvas.getBoundingClientRect().x;
