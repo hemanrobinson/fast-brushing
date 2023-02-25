@@ -83,7 +83,7 @@ const Matrix = ( props ) => {
     useEffect(() => {
         
         // Create the SVG elements (after https://observablehq.com/@d3/brushable-scatterplot-matrix?collection=@d3/d3-brush).
-        Matrix.canvas = d3.select( ref.current.childNodes[ 0 ]);
+        Matrix.canvas = d3.select( ref.current.childNodes[ 0 ]).node();
         const svg = d3.select( ref.current.childNodes[ 1 ]);
         svg.selectAll( "*" ).remove();
         const cell = svg.append( "g" )
@@ -133,6 +133,8 @@ const Matrix = ( props ) => {
                     yUp = event.selection[ 1 ][ 1 ];
                 let offsetX, offsetY;
                 if( event.sourceEvent ) {
+                    const textarea = document.getElementById( "debug" );
+                    textarea.value += "onBrush " + event.sourceEvent.touches + "\n";
                     if( event.sourceEvent.touches ) {
                         const touch = event.sourceEvent.touches[ 0 ];
                         offsetX = touch.clientX - Matrix.canvas.getBoundingClientRect().x;
