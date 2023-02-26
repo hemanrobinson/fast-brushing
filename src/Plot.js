@@ -15,6 +15,13 @@ const Plot = ( props ) => {
  * @constant {number}
  */
 Plot.padding = 10;
+
+/**
+ * Cached bitmap, or none iff undefined.
+ *
+ * @constant {ImageData|undefined}
+ */
+Plot.imageData = undefined;
     
 /**
  * Returns normalized rectangle.
@@ -103,21 +110,27 @@ Plot.draw = ( x, y, width, height, i, j, scaled, canvas, opacity, selectedRows, 
         });
     }
     
-    // Make a local copy.
-    let myImageData = g.createImageData( width, height );
-    myImageData.data.set( deselectedImageData.data );
+    // Copy the deselected bitmap.  Caching minimizes use of createImageData().
+    if( !Plot.imageData || ( Plot.imageData.data.length !== nBytes )) {
+        Plot.imageData = g.createImageData( width, height );                                // black and transparent
+    } else {
+        Plot.imageData.data.fill( 0, 0, nBytes );                                           // black and transparent
+    }
+    const myImageData = Plot.imageData;
     const d = myImageData.data;
+    d.set( deselectedImageData.data );
     
-    // Add the selected rows as specified...
+    // Add the selected rows as specified.
     // Selected rows use opacity, but not alpha blending, in order to keep them bright.  TODO:  Explore alternatives to this.
-    selectedRows.forEach(( row ) => {
-        let xScaled = scaledi[ row ],
+    for( let m = 0; ( m < selectedRows.length ); m++ ) {
+        let row = selectedRows[ m ],
+            xScaled = scaledi[ row ],
             yScaled = height - scaledj[ row ],
             k = ( yScaled * width + xScaled ) * 4;
         if(( 0 <= k ) && ( k + 3 < nBytes )) {
-            d[ k ] = Math.round( 255 + d[ k ] * ( 1 - opacity ));                       // r
+            d[ k ] = Math.round( 255 + d[ k ] * ( 1 - opacity ));                           // r
         }
-    });
+    }
     
     // Draw and return the bitmap.
     g.putImageData( myImageData, x, y, padding, padding, width - 2 * padding, height - 2 * padding );

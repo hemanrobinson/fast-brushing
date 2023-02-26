@@ -69,18 +69,17 @@ const App = () => {
                 Transparency shows density, via <a href="https://en.wikipedia.org/wiki/Alpha_compositing">alpha blending</a>.  This gives scatter plots the expressive power of contour plots, while still displaying individual points (Wegman and Luo, 2002).
                 </p>
                 <p>
-                The following optimizations improve performance:
+                Optimization was a joint effort with <a href="https://observablehq.com/@fil">Fil</a>, whose suggestions made this much faster.  There are a number of small optimizations, but these had the greatest effect:
                 </p>
                 <ol>
-                <li>Drawing in a single CANVAS element avoids the need to allocate thousands of SVG elements.</li>
-                <li>Each row of data is drawn as a single pixel, to display large data sets with minimal drawing code.</li>
-                <li>Deselected points are cached, so drawing a plot requires only a fast <a href="https://en.wikipedia.org/wiki/Bit_blit">bit blit</a>, then drawing the selected points.</li>
-                <li>Selected row indices are cached, so drawing selected points iterates over a short list, not the entire data set.</li>
-                <li>Pixel coordinates are cached, per <a href="https://observablehq.com/@fil">Fil</a>'s suggestion, to speed drawing and selection.</li>
-                <li>The brushing interaction is <a href="https://levelup.gitconnected.com/debounce-in-javascript-improve-your-applications-performance-5b01855e086">debounced</a>, also per <a href="https://observablehq.com/@fil">Fil</a>'s suggestion, to improve drawing for large data sets.</li>
+                <li>Drawing in a single CANVAS eliminates the need to allocate thousands of SVG elements.</li>
+                <li>Drawing each row of data as a single pixel displays large data sets with minimal drawing code.</li>
+                <li>Deselected points are cached in bitmaps, so that drawing a plot requires only a fast <a href="https://en.wikipedia.org/wiki/Bit_blit">bit blit</a>, then drawing the selected points.</li>
+                <li>Pixel coordinates are cached in integer Arrays, to eliminate scaling calculations during drawing and selection.</li>
+                <li>The brushing interaction is <a href="https://levelup.gitconnected.com/debounce-in-javascript-improve-your-applications-performance-5b01855e086">debounced</a>, to reduce drawing in large data sets.</li>
                 </ol>
                 <p>
-                Performance varies, but most desktops can display hundreds of thousands of points per plot.  So a 4x4 matrix can brush several million points.  As our hardware improves, we'll see these numbers grow.
+                Performance varies on different devices.  My iMac can brush 1,000,000 points per plot; in a 4x4 matrix, that's twelve million points.  As our hardware improves, we'll see these numbers grow.
                 </p>
                 <br/>
                 <h2>References</h2>
