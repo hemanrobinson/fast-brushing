@@ -82,7 +82,7 @@ const App = () => {
                 Performance varies on different devices.  My iMac can brush 1,000,000 points per plot; in a 4x4 matrix, that's twelve million points.  As our hardware improves, we'll see these numbers grow.
                 </p>
                 <br/>
-                <h2>References</h2>
+                <h2>Further Reading</h2>
                 <ul>
                     <li>Becker, R. and Cleveland, W. (1987). "Brushing Scatterplots". Technometrics. 29 (2): 127-142. <a href="https://doi.org/10.2307/1269768">https://doi.org/10.2307/1269768</a>.</li><br/>
                     <li>Ho, Y. (2016). Personal communication. <a href="https://www.linkedin.com/in/yang-ho-94b14860/">https://www.linkedin.com/in/yang-ho-94b14860/</a></li><br/>
