@@ -44,14 +44,14 @@ const App = () => {
             </div>
             <div className="Description">
                 <h2>Design Notes</h2>
+                <p>
+                This implementation reuses some code from the <a href="https://observablehq.com/collection/@d3/d3-brush">d3-brush collection</a>.  This design is based on the <a href="http://www.sci.utah.edu/~kpotter/Library/Papers/becker:1987:BS/index.html">scatter plot matrix</a> of <a href="https://www.researchgate.net/scientific-contributions/Richard-A-Becker-7076158">Richard Becker</a> and <a href="https://www.cerias.purdue.edu/site/people/faculty/view/709">William Cleveland</a> (Becker and Cleveland, 1987).
+                </p>
                 <p className="center">
                     <a href="https://www.datavis.ca/milestones/index.php?group=1975%2B&mid=ms259"><img title="Dr. Richard Becker" alt="Dr. Richard Becker" src={becker}/></a>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <a href="https://www.datavis.ca/milestones/index.php?group=1975%2B&mid=ms259"><img title="Dr. William Cleveland" alt="Dr. William Cleveland" src={cleveland}/></a>
                     <br />
-                </p>
-                <p>
-                This design is based on the <a href="http://www.sci.utah.edu/~kpotter/Library/Papers/becker:1987:BS/index.html">scatter plot matrix</a> of <a href="https://www.researchgate.net/scientific-contributions/Richard-A-Becker-7076158">Richard Becker</a> and <a href="https://www.cerias.purdue.edu/site/people/faculty/view/709">William Cleveland</a> (Becker and Cleveland, 1987).  The implementation reuses some code from the <a href="https://observablehq.com/collection/@d3/d3-brush">d3-brush collection</a>.
                 </p>
                 <p>
                 The goal of the scatter plot matrix is not to locate points, but to find patterns in the data.  Therefore, there are no axes, only data ranges.  This increases Tufte's "Data-Ink Ratio" (Tufte, 1983).
@@ -81,7 +81,6 @@ const App = () => {
                 <p>
                 Performance varies on different devices.  My iMac can brush 1,000,000 points per plot; in a 4x4 matrix, that's twelve million points.  As our hardware improves, we'll see these numbers grow.
                 </p>
-                <br/>
                 <h2>Further Reading</h2>
                 <ul>
                     <li>Becker, R. and Cleveland, W. (1987). "Brushing Scatterplots". Technometrics. 29 (2): 127-142. <a href="https://doi.org/10.2307/1269768">https://doi.org/10.2307/1269768</a>.</li><br/>
