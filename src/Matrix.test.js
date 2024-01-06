@@ -32,7 +32,7 @@ it( "clears data structures", () => {
     expect( Matrix.brushNode ).toBe( undefined );
 });
 
-// In brush.js, svg.width.baseVal is undefined.
+// In brush.js, svg.width.baseVal is undefined.  SVGElement is not supported in JSDOM.
 //it( "renders a Matrix", () => {
 //    act(() => {
 //        render( <Matrix nData={100} opacity={1} />, container );
