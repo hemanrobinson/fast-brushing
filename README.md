@@ -2,7 +2,7 @@
 
 Brushing is a basic technique of exploratory data analysis, developed in the 1970s ([Fishkeller, Friedman, and Tukey](https://www.researchgate.net/publication/245345268_An_interactive_multidimensional_data_display_and_analysis_system)) and 1980s ([Becker and Cleveland](https://www.jstor.org/stable/1269768?seq=1), [Stuetzle](https://www.jstor.org/stable/2289448?seq=1)).  Over the years, products have demonstrated many ways of drawing a brush.
 
-[This project demonstrates usability and performance optimizations for brushing.](https://hemanrobinson.github.io/svg-canvas/)
+[This project demonstrates usability and performance optimizations for brushing.](https://hemanrobinson.github.io/brush/)
 
 [![Brush](src/brush.png "Brush")](https://hemanrobinson.github.io/brush/)
 
