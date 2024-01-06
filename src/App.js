@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Slider } from '@mui/material';
 import Matrix from './Matrix';
 import './App.css';
+import github from './github.svg';
 import becker from './becker.png';
 import cleveland from './cleveland.png';
 
@@ -18,7 +19,7 @@ const App = () => {
     return (
         <div className="Column">
             <div className="Description">
-                <h1>Optimized Brushing</h1>
+                <h1>Optimized Brushing&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://github.com/hemanrobinson/brush/"><img className="icon" title="Code Shared on GitHub" alt="Code Shared on GitHub" src={github}/></a></h1>
                 <p>
                 Brushing is a basic technique of exploratory data analysis, developed in the 1970s and 1980s.  Back then, analysts were happy to brush a few hundred points.  On modern hardware, we can brush many more.
                 </p>
@@ -91,7 +92,6 @@ const App = () => {
 
                 </ul>
             </div>
-            <a href="https://github.com/hemanrobinson/brush/">Code Shared on GitHub</a>
         </div>
     );
 }
