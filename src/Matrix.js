@@ -95,11 +95,15 @@ const Matrix = ( props ) => {
         // Create the brush.
         const onStart = ( event ) => {
             if( event.sourceEvent ) {
+                Matrix.isExtending = event.sourceEvent.shiftKey;
+                Matrix.isReducing = ( event.sourceEvent.ctrlKey || event.sourceEvent.metaKey );
                 const target = event.sourceEvent.target.parentNode;
                 if( Matrix.brushNode !== target ) {
                     d3.select( Matrix.brushNode ).call( brush.move, null );
                     Matrix.brushNode = target;
-                    Data.deselectAll();
+                    if( !Matrix.isExtending && !Matrix.isReducing ) {
+                        Data.deselectAll();
+                    }
                 } else if( event.selection ) {
                     const xDown = event.selection[ 0 ][ 0 ],
                     yDown = event.selection[ 0 ][ 1 ],
@@ -118,7 +122,7 @@ const Matrix = ( props ) => {
                     j = Math.floor( offsetY / height ),
                     x = i * width,
                     y = j * height;
-                    if( !Plot.isWithin({ x: offsetX, y : offsetY }, { x: x + xDown, y: y + yDown, width: xUp - xDown, height: yUp - yDown })) {
+                    if( !Matrix.isExtending && !Matrix.isReducing && !Plot.isWithin({ x: offsetX, y : offsetY }, { x: x + xDown, y: y + yDown, width: xUp - xDown, height: yUp - yDown })) {
                         Data.deselectAll();
                     }
                 }
@@ -130,9 +134,12 @@ const Matrix = ( props ) => {
                 const xDown = event.selection[ 0 ][ 0 ],
                     yDown = event.selection[ 0 ][ 1 ],
                     xUp = event.selection[ 1 ][ 0 ],
-                    yUp = event.selection[ 1 ][ 1 ];
+                    yUp = event.selection[ 1 ][ 1 ],
+                    nColumns = Data.getColumnNames().length;
                 let offsetX, offsetY;
                 if( event.sourceEvent ) {
+                    Matrix.isExtending = event.sourceEvent.shiftKey;
+                    Matrix.isReducing = ( event.sourceEvent.ctrlKey || event.sourceEvent.metaKey );
                     if( event.sourceEvent.touches ) {
                         const touch = event.sourceEvent.touches[ 0 ];
                         offsetX = touch.clientX - Matrix.canvas.getBoundingClientRect().x;
@@ -146,13 +153,18 @@ const Matrix = ( props ) => {
                     offsetY = height * ( brushNodeOffset % 4 );
                 }
                 let i = Math.floor( offsetX / width ),
-                j = Math.floor( offsetY / height ),
-                x = i * width,
-                y = j * height;
-                if( i === j ) {
-                    Data.deselectAll();
-                } else {
-                    Data.selectedRows = Plot.select( x, y, width, height, i, j, Matrix.scaled, { x: x + xDown, y: y + yDown, width: xUp - xDown, height: yUp - yDown });
+                    j = Math.floor( offsetY / height ),
+                    x = i * width,
+                    y = j * height;
+                if(( i !== j ) && ( 0 <= i ) && ( i < nColumns ) && ( 0 <= j ) && ( j < nColumns )) {
+                    const selectedRows = Plot.select( x, y, width, height, i, j, Matrix.scaled, { x: x + xDown, y: y + yDown, width: xUp - xDown, height: yUp - yDown });
+                    if( Matrix.isExtending || Matrix.isReducing ) {
+                        const set = new Set( selectedRows );    // faster than Arrays
+                        const reducedRows = Data.selectedRows.filter(( item ) => !set.has( item ));
+                        Data.selectedRows = Matrix.isReducing ? reducedRows : selectedRows.concat( reducedRows );
+                    } else {
+                        Data.selectedRows = selectedRows;
+                    }
                     if( Matrix.bitmaps && Matrix.bitmaps[ i ]) {
                         Plot.draw( x, y, width, height, i, j, Matrix.scaled, ref.current.firstChild, opacity, Data.selectedRows, Matrix.bitmaps[ i ][ j ]);
                     }
@@ -165,6 +177,7 @@ const Matrix = ( props ) => {
         };
         const brush = d3.brush()
             .extent([[ 2, 2 ], [ width, height ]])
+            .keyModifiers( false )
             .on( "start", onStart )
             .on( "brush", onBrush )
             .on( "end", onEnd );
@@ -209,10 +222,26 @@ Matrix.brushNode = undefined;
 Matrix.scaled = undefined;
 
 /**
+ * True iff extending selection.
+ *
+ * @type {boolean}
+ */
+Matrix.isExtending = false;
+
+/**
+ * True iff reducing selection.
+ *
+ * @type {boolean}
+ */
+Matrix.isReducing = false;
+
+/**
  * Clears data structures.
  */
 Matrix.clear = () => {
-    Data.deselectAll();
+    if( !Matrix.isExtending && !Matrix.isReducing ) {
+        Data.deselectAll();
+    }
     Matrix.bitmaps = undefined;
 };
 

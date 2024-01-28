@@ -24,12 +24,16 @@ afterEach(() => {
 it( "initializes a Matrix", () => {
     expect( Matrix.bitmaps ).toBe( undefined );
     expect( Matrix.brushNode ).toBe( undefined );
+    expect( Matrix.isExtending ).toBe( false );
+    expect( Matrix.isReducing ).toBe( false );
 });
 
 it( "clears data structures", () => {
     Matrix.clear();
     expect( Matrix.bitmaps ).toBe( undefined );
     expect( Matrix.brushNode ).toBe( undefined );
+    expect( Matrix.isExtending ).toBe( false );
+    expect( Matrix.isReducing ).toBe( false );
 });
 
 // In brush.js, svg.width.baseVal is undefined.  SVGElement is not supported in JSDOM.

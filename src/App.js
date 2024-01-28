@@ -24,7 +24,7 @@ const App = () => {
                 Brushing is a basic technique of exploratory data analysis, developed in the 1970s and 1980s.  Back then, analysts were happy to brush a few hundred points.  On modern hardware, we can brush many more.
                 </p>
                 <p>
-                Drag the brush to select the points.  Drag the edges to resize the brush.  Drag a rectangle in any plot to create a new brush.
+                Drag the brush to select the points.  Drag the edges to resize the brush.  Drag a rectangle in any plot to create a new brush. When brushing, use the Shift or Control/Command keys to extend or reduce your selection.
                 </p>
                 <p>
                 Use the sliders to adjust the number of points and their transparency.
@@ -70,6 +70,9 @@ const App = () => {
                 Transparency shows density, via <a href="https://en.wikipedia.org/wiki/Alpha_compositing">alpha blending</a>.  This gives scatter plots the expressive power of contour plots, while still displaying individual points (Wegman and Luo, 2002).
                 </p>
                 <p>
+                When selecting individual objects, standard behaviors of Shift and Ctrl are clearly defined (e.g. Apple, 2024). However, I found no UI standards for their behavior during brushing. The behavior implemented here enables people to select irregular areas, or discrete clusters of points.
+                </p>
+                <p>
                 Optimization was a joint effort with <a href="https://observablehq.com/@fil">Fil</a>, whose suggestions made this much faster.  There are a number of small optimizations, but these had the greatest effect:
                 </p>
                 <ol>
@@ -84,6 +87,7 @@ const App = () => {
                 </p>
                 <h2>Further Reading</h2>
                 <ul>
+                    <li>Apple (2024). MacOS User Guide. <a href="https://support.apple.com/en-ae/guide/mac-help/mchlp1378/mac">https://support.apple.com/en-ae/guide/mac-help/mchlp1378/mac</a>.</li><br/>
                     <li>Becker, R. and Cleveland, W. (1987). "Brushing Scatterplots". Technometrics. 29 (2): 127-142. <a href="https://doi.org/10.2307/1269768">https://doi.org/10.2307/1269768</a>.</li><br/>
                     <li>Ho, Y. (2016). Personal communication. <a href="https://www.linkedin.com/in/yang-ho-94b14860/">https://www.linkedin.com/in/yang-ho-94b14860/</a></li><br/>
                     <li>Tidwell, J. (2010). Designing Interfaces: Patterns for Effective Interaction Design, Second Edition, 312-314.  Sebastopol CA: O'Reilly Media. <a href="https://www.oreilly.com/library/view/designing-interfaces-3rd/9781492051954/">https://www.oreilly.com/library/view/designing-interfaces-3rd/9781492051954/</a>.</li><br/>
