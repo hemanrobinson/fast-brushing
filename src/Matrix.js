@@ -95,8 +95,8 @@ const Matrix = ( props ) => {
         // Create the brush.
         const onStart = ( event ) => {
             if( event.sourceEvent ) {
-                Matrix.isExtending = event.sourceEvent.shiftKey;
-                Matrix.isReducing = ( event.sourceEvent.ctrlKey || event.sourceEvent.metaKey );
+                Matrix.isExtending = event.sourceEvent.shiftKey && !event.sourceEvent.ctrlKey && !event.sourceEvent.metaKey;
+                Matrix.isReducing = !event.sourceEvent.shiftKey && ( event.sourceEvent.ctrlKey || event.sourceEvent.metaKey );
                 const target = event.sourceEvent.target.parentNode;
                 if( Matrix.brushNode !== target ) {
                     d3.select( Matrix.brushNode ).call( brush.move, null );
@@ -138,8 +138,8 @@ const Matrix = ( props ) => {
                     nColumns = Data.getColumnNames().length;
                 let offsetX, offsetY;
                 if( event.sourceEvent ) {
-                    Matrix.isExtending = event.sourceEvent.shiftKey;
-                    Matrix.isReducing = ( event.sourceEvent.ctrlKey || event.sourceEvent.metaKey );
+                    Matrix.isExtending = event.sourceEvent.shiftKey && !event.sourceEvent.ctrlKey && !event.sourceEvent.metaKey;
+                    Matrix.isReducing = !event.sourceEvent.shiftKey && ( event.sourceEvent.ctrlKey || event.sourceEvent.metaKey )
                     if( event.sourceEvent.touches ) {
                         const touch = event.sourceEvent.touches[ 0 ];
                         offsetX = touch.clientX - Matrix.canvas.getBoundingClientRect().x;

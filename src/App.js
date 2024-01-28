@@ -24,7 +24,10 @@ const App = () => {
                 Brushing is a basic technique of exploratory data analysis, developed in the 1970s and 1980s.  Back then, analysts were happy to brush a few hundred points.  On modern hardware, we can brush many more.
                 </p>
                 <p>
-                Drag the brush to select the points.  Drag the edges to resize the brush.  Drag a rectangle in any plot to create a new brush. When brushing, use the Shift or Control/Command keys to extend or reduce your selection.
+                Drag the brush to select the points.  Drag the edges to resize the brush.  Drag a rectangle in any plot to create a new brush.
+                </p>
+                <p>
+                When brushing, extend and reduce your selection by using the Shift and Control keys. (On Mac, use the Shift and Command keys.)
                 </p>
                 <p>
                 Use the sliders to adjust the number of points and their transparency.
@@ -70,7 +73,7 @@ const App = () => {
                 Transparency shows density, via <a href="https://en.wikipedia.org/wiki/Alpha_compositing">alpha blending</a>.  This gives scatter plots the expressive power of contour plots, while still displaying individual points (Wegman and Luo, 2002).
                 </p>
                 <p>
-                When selecting individual objects, standard behaviors of Shift and Ctrl are clearly defined (e.g. Apple, 2024). However, I found no UI standards for their behavior during brushing. The behavior implemented here enables people to select irregular areas, or discrete clusters of points.
+                When selecting individual objects, standard behaviors of Shift, Control, and Command keys are well-defined (e.g. Apple, 2024). However, I found no UI standards for their behavior during brushing. The behavior implemented here enables people to select irregular areas, or disjoint clusters of points.
                 </p>
                 <p>
                 Optimization was a joint effort with <a href="https://observablehq.com/@fil">Fil</a>, whose suggestions made this much faster.  There are a number of small optimizations, but these had the greatest effect:
