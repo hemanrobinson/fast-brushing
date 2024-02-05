@@ -47,7 +47,7 @@ const App = () => {
                     onChange={( event, value ) => { Matrix.clear(); setOpacity( 1 - value ); }} />
             </div>
             <div className="Description">
-                <h2>Design Notes</h2>
+                <h2>Usability</h2>
                 <p>
                 This implementation reuses some code from the <a href="https://observablehq.com/collection/@d3/d3-brush">d3-brush collection</a>.  This design is based on the <a href="http://www.sci.utah.edu/~kpotter/Library/Papers/becker:1987:BS/index.html">scatter plot matrix</a> of <a href="https://www.researchgate.net/scientific-contributions/Richard-A-Becker-7076158">Richard Becker</a> and <a href="https://www.cerias.purdue.edu/site/people/faculty/view/709">William Cleveland</a> (Becker and Cleveland, 1987).
                 </p>
