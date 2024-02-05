@@ -1,6 +1,6 @@
 {
-  "short_name": "Brush",
-  "name": "Brushing 1,000,000 points",
+  "short_name": "Fast Brushing",
+  "name": "Optimized Brushing",
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",

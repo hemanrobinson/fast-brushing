@@ -19,9 +19,9 @@ const App = () => {
     return (
         <div className="Column">
             <div className="Description">
-                <h1>Optimized Brushing&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://github.com/hemanrobinson/brush/"><img className="icon" title="Code Shared on GitHub" alt="Code Shared on GitHub" src={github}/></a></h1>
+                <h1>Optimized Brushing&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://github.com/hemanrobinson/fast-brushing/"><img className="icon" title="Code Shared on GitHub" alt="Code Shared on GitHub" src={github}/></a></h1>
                 <p>
-                Brushing is a basic technique of exploratory data analysis, developed in the 1970s and 1980s.  Back then, analysts were happy to brush a few hundred points.  On modern hardware, we can brush many more.
+                Brushing is a basic technique of exploratory data analysis, developed in the 1970s and 1980s.  Back then, fast brushing was possible on a few hundred points.  On modern hardware, we can brush many more.
                 </p>
                 <p>
                 Drag the brush to select the points.  Drag the edges to resize the brush.  Drag a rectangle in any plot to create a new brush.
@@ -49,7 +49,7 @@ const App = () => {
             <div className="Description">
                 <h2>Usability</h2>
                 <p>
-                This implementation reuses some code from the <a href="https://observablehq.com/collection/@d3/d3-brush">d3-brush collection</a>.  This design is based on the <a href="http://www.sci.utah.edu/~kpotter/Library/Papers/becker:1987:BS/index.html">scatter plot matrix</a> of <a href="https://www.researchgate.net/scientific-contributions/Richard-A-Becker-7076158">Richard Becker</a> and <a href="https://www.cerias.purdue.edu/site/people/faculty/view/709">William Cleveland</a> (Becker and Cleveland, 1987).
+                This design is based on the <a href="http://www.sci.utah.edu/~kpotter/Library/Papers/becker:1987:BS/index.html">scatter plot matrix</a> of <a href="https://www.researchgate.net/scientific-contributions/Richard-A-Becker-7076158">Richard Becker</a> and <a href="https://www.cerias.purdue.edu/site/people/faculty/view/709">William Cleveland</a> (Becker and Cleveland, 1987).
                 </p>
                 <p className="center">
                     <a href="https://www.datavis.ca/milestones/index.php?group=1975%2B&mid=ms259"><img title="Dr. Richard Becker" alt="Dr. Richard Becker" src={becker}/></a>
@@ -76,7 +76,7 @@ const App = () => {
                 When selecting individual objects, standard behaviors of Shift, Control, and Command keys are well-defined (e.g. Apple, 2024). However, I found no UI standards for their behavior during brushing. The behavior implemented here enables people to select irregular areas, or disjoint clusters of points.
                 </p>
                 <p>
-                Optimization was a joint effort with <a href="https://observablehq.com/@fil">Fil</a>, whose suggestions made this much faster.  There are a number of small optimizations, but these had the greatest effect:
+                This implementation reuses some code from the <a href="https://observablehq.com/collection/@d3/d3-brush">d3-brush collection</a>.  Optimization was a joint effort with <a href="https://observablehq.com/@fil">Fil</a>, whose suggestions made this much faster.  There are a number of small optimizations, but these had the greatest effect:
                 </p>
                 <ol>
                 <li>Drawing each row of data as a single pixel displays large data sets with minimal drawing code.</li>

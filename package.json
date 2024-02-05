@@ -1,8 +1,8 @@
 {
-  "name": "brush",
+  "name": "fast-brushing",
   "version": "1.0.0",
   "private": true,
-  "homepage": "https://hemanrobinson.github.io/brush",
+  "homepage": "https://hemanrobinson.github.io/fast-brushing",
   "dependencies": {
     "@babel/core": "^7.20.12",
     "@emotion/react": "^11.10.5",
