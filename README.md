@@ -6,4 +6,4 @@ Brushing is a basic technique of exploratory data analysis, developed in the 197
 
 [![Brush](src/fast-brushing.png "Fast Brushing")](https://hemanrobinson.github.io/fast-brushing/)
 
-This project uses [d3](https://github.com/d3/d3) and [Material-UI](https://github.com/mui-org/material-ui), and was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project uses [React](https://react.dev), [Material-UI](https://github.com/mui-org/material-ui), and [d3](https://github.com/d3/d3).

@@ -78,6 +78,10 @@ const App = () => {
                 <p>
                 When selecting individual objects, standard behaviors of Shift, Control, and Command keys are well-defined (e.g. Apple, 2024). However, I found no UI standards for their behavior during brushing. The behavior implemented here enables people to select irregular areas, or disjoint clusters of points.
                 </p>
+                <h2>Implementation</h2>
+                <p>
+                This project uses <a href="https://react.dev">React</a>, <a href="https://github.com/mui-org/material-ui">Material-UI</a>, and <a href="https://github.com/d3/d3">d3</a>.
+                </p>
                 <p>
                 This implementation reuses some code from the <a href="https://observablehq.com/collection/@d3/d3-brush">d3-brush collection</a>.  Optimization was a joint effort with <a href="https://observablehq.com/@fil">Fil</a>, whose suggestions made this much faster.  There are a number of small optimizations, but these had the greatest effect:
                 </p>
