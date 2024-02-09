@@ -4,4 +4,4 @@ Brushing is a basic technique of exploratory data analysis, developed in the 197
 
 [This project demonstrates usability and performance optimizations for brushing.](https://hemanrobinson.github.io/fast-brushing/)
 
-[![Brush](src/fast-brushing.png "Fast Brushing")](https://hemanrobinson.github.io/fast-brushing/)
+[![Brush](public/fast-brushing-small.png "Fast Brushing")](https://hemanrobinson.github.io/fast-brushing/)
