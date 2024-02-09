@@ -61,10 +61,10 @@ const App = () => {
                 The goal of the scatter plot matrix is not to locate points, but to find patterns in the data.  Therefore, there are no axes, only data ranges.  This increases Tufte's "Data-Ink Ratio" (Tufte, 1983).
                 </p>
                 <p>
-                Colors emphasize the data.   Black on white gives maximum emphasis.  The red selection color draws attention.  The grid, being less important, is gray.
+                Colors emphasize the data. Black on white gives maximum emphasis.  The red selection color draws attention.  The grid, being less important, is gray.
                 </p>
                 <p>
-                For the same reason, the brush could be gray.  However, usability tests pointed out that blue is the standard selection color (Ho, 2016).  Following standards eases the user's learning curve.
+                By the same logic, the brush could be gray.  However, usability tests pointed out that blue is the standard selection color (Ho, 2016).  Following standards eases the user's learning curve.
                 </p>
                 <p>
                 The edge of the brush has a distinct color, indicating a distinct function: dragging the edge resizes the brush, while dragging within the brush moves it.  These distinct functions are reinforced by distinct cursor shapes; but cursor shapes appear intermittently, while the distinct colors are always visible.
@@ -80,20 +80,20 @@ const App = () => {
                 </p>
                 <h2>Implementation</h2>
                 <p>
-                This project uses <a href="https://react.dev">React</a>, <a href="https://github.com/mui-org/material-ui">Material-UI</a>, and <a href="https://github.com/d3/d3">d3</a>.
+                This project uses <a href="https://react.dev">React</a>, <a href="https://github.com/mui-org/material-ui">Material-UI</a>, and <a href="https://github.com/d3/d3">d3</a>, and reuses some code from the <a href="https://observablehq.com/collection/@d3/d3-brush">d3-brush collection</a>.
                 </p>
                 <p>
-                This implementation reuses some code from the <a href="https://observablehq.com/collection/@d3/d3-brush">d3-brush collection</a>.  Optimization was a joint effort with <a href="https://observablehq.com/@fil">Fil</a>, whose suggestions made this much faster.  There are a number of small optimizations, but these had the greatest effect:
+                Optimization was a joint effort with <a href="https://observablehq.com/@fil">Fil</a>, whose suggestions made this much faster.  There are a number of small optimizations, but these had the greatest effect:
                 </p>
                 <ol>
-                <li>Drawing each row of data as a single pixel displays large data sets with minimal drawing code.</li>
                 <li>Drawing in a CANVAS eliminates the need to allocate thousands of SVG elements.</li>
+                <li>Drawing each row of data as a single pixel displays large data sets with minimal drawing code.</li>
                 <li>Deselected points are cached in bitmaps, so that drawing a plot requires only a fast <a href="https://en.wikipedia.org/wiki/Bit_blit">bit blit</a>, then drawing the selected points. (A similar benefit can be achieved using a second CANVAS.)</li>
                 <li>The brushing interaction is <a href="https://levelup.gitconnected.com/debounce-in-javascript-improve-your-applications-performance-5b01855e086">debounced</a>, to reduce drawing in large data sets.</li>
-                <li>Pixel coordinates are cached in integer Arrays, to eliminate scaling calculations during drawing and selection.</li>
+                <li>Pixel coordinates are cached in integer Arrays, to eliminate scaling calculations during drawing and selection. The scatter plot matrix is so frequently used that some caching seems worthwhile, but caching could probably not be justified for every type of graph.</li>
                 </ol>
                 <p>
-                Performance varies on different devices.  My iMac can brush 1,000,000 points per plot; in a 4x4 matrix, that's twelve million points.  As our hardware improves, we'll see these numbers grow.
+                Performance varies on different devices.  My iMac (2020, 3.6 GHz 10-Core Intel Core i9, 128 GB) can brush 1,000,000 points per plot; in a 4x4 matrix, that's twelve million points.  As our hardware improves, we'll see these numbers grow.
                 </p>
                 <h2>Further Reading</h2>
                 <ul>
