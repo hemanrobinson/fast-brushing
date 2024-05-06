@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/fast-brushing/static/css/main.4544624c.css",
+    "main.css": "/fast-brushing/static/css/main.4d61e97e.css",
     "main.js": "/fast-brushing/static/js/main.0bc2e621.js",
     "static/media/becker.png": "/fast-brushing/static/media/becker.ed8ef60d8c697ba23fad.png",
     "static/media/cleveland.png": "/fast-brushing/static/media/cleveland.70d2e3e7868c6f94bcd4.png",
     "static/media/github.svg": "/fast-brushing/static/media/github.6fa18895f6e6c7772cab7049f7e05f59.svg",
     "index.html": "/fast-brushing/index.html",
-    "main.4544624c.css.map": "/fast-brushing/static/css/main.4544624c.css.map",
+    "main.4d61e97e.css.map": "/fast-brushing/static/css/main.4d61e97e.css.map",
     "main.0bc2e621.js.map": "/fast-brushing/static/js/main.0bc2e621.js.map"
   },
   "entrypoints": [
-    "static/css/main.4544624c.css",
+    "static/css/main.4d61e97e.css",
     "static/js/main.0bc2e621.js"
   ]
 }
