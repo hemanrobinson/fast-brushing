@@ -21,16 +21,16 @@ const App = () => {
             <div className="Description">
                 <h1>Optimized Brushing&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://github.com/hemanrobinson/fast-brushing/"><img className="icon" title="Code Shared on GitHub" alt="Code Shared on GitHub" src={github}/></a></h1>
                 <p>
-                Brushing is a basic technique of exploratory data analysis, developed in the 1970s and 1980s.  Back then, fast brushing was possible on a few hundred points.  On modern hardware, we can brush many more.
+                Brushing is a powerful technique of interactive graphics, highlighting linked data in multiple views. When it was developed in the 1980s, brushing was limited to a few hundred points.  On modern hardware, we can brush many more.
                 </p>
                 <p>
                 Drag the brush to select the points.  Drag the edges to resize the brush.  Drag a rectangle in any plot to create a new brush.
                 </p>
                 <p>
-                When brushing, extend and reduce your selection by using the Shift and Control keys. (On Mac, use the Shift and Command keys.)
+                Extend and reduce your selection by pressing the Shift and Control keys. (On a Mac, use the Shift and Command keys.)
                 </p>
                 <p>
-                Use the sliders to adjust the number of points and their transparency.
+                Adjust the sliders to change the number of points and their transparency.
                 </p>
                 <Matrix nData={nData} opacity={opacity} />
                 <br />
@@ -61,13 +61,13 @@ const App = () => {
                 The goal of the scatter plot matrix is not to locate points, but to find patterns in the data.  Therefore, there are no axes, only data ranges.  This increases Tufte's "Data-Ink Ratio" (Tufte, 1983).
                 </p>
                 <p>
-                Colors emphasize the data. Black on white gives maximum emphasis.  The red selection color draws attention.  The grid, being less important, is gray.
+                Colors emphasize the data. Black on white gives maximum emphasis.  The red selection color draws attention. The grid, being less important, is gray.
                 </p>
                 <p>
-                By the same logic, the brush could be gray.  However, usability tests pointed out that blue is the standard selection color (Ho, 2016).  Following standards eases the user's learning curve.
+                By the same logic, the brush could be gray. However, usability tests pointed out that the standard color for selection is blue (Ho, 2016).  Following standards eases the user's learning curve.
                 </p>
                 <p>
-                The edge of the brush has a distinct color, indicating a distinct function: dragging the edge resizes the brush, while dragging within the brush moves it.  These distinct functions are reinforced by distinct cursor shapes; but cursor shapes appear intermittently, while the distinct colors are always visible.
+                The edge of the brush has a distinct color, indicating a distinct function: dragging the edge resizes the brush, while dragging within the brush moves it.  These distinct functions are reinforced by distinct cursor shapes, but cursor shapes are subtle and only appear on hover. The distinct colors are always clearly visible.
                 </p>
                 <p>
                 <a href="https://github.com/d3/d3-brush">D3's brush</a> is <em>persistent</em> rather than <em>transient</em>.  A persistent brush reduces errors, by enabling the user to resize the brush (Tidwell, 2010).  A persistent brush also helps users share their explorations, through screen shots for example.
@@ -76,22 +76,25 @@ const App = () => {
                 Transparency shows density, via <a href="https://en.wikipedia.org/wiki/Alpha_compositing">alpha blending</a>.  This gives scatter plots the expressive power of contour plots, while still displaying individual points (Wegman and Luo, 2002).
                 </p>
                 <p>
-                When selecting individual objects, standard behaviors of Shift, Control, and Command keys are well-defined (e.g. Apple, 2024). However, I found no UI standards for their behavior during brushing. The behavior implemented here enables people to select irregular areas, or disjoint clusters of points.
+                Shift, Control, and Command keys are standard modifiers to extend and reduce selections of individual objects (e.g. Apple, 2024). I have found no documented standards for their behavior during brushing. The behavior implemented here enables people to select irregular areas or disjoint clusters of points.
                 </p>
                 <h2>Implementation</h2>
                 <p>
                 This project uses <a href="https://react.dev">React</a>, <a href="https://github.com/mui-org/material-ui">Material-UI</a>, and <a href="https://github.com/d3/d3">d3</a>, and reuses some code from the <a href="https://observablehq.com/collection/@d3/d3-brush">d3-brush collection</a>.
                 </p>
                 <p>
-                Optimization was a joint effort with <a href="https://observablehq.com/@fil">Fil</a>, whose suggestions made this much faster.  There are a number of small optimizations, but these had the greatest effect:
+                Optimization was a joint effort with <a href="https://observablehq.com/@fil">Fil</a>, whose suggestions made this code much faster.  There are a number of smaller optimizations, but these had the greatest effect:
                 </p>
                 <ol>
-                <li>Drawing in a CANVAS element eliminates the need to allocate thousands of SVG elements.</li>
-                <li>Drawing each row of data as a single pixel displays large data sets with minimal drawing code.</li>
-                <li>Deselected points are cached in bitmaps, so that drawing a plot requires only a fast <a href="https://en.wikipedia.org/wiki/Bit_blit">bit blit</a>, then drawing the selected points. (A similar benefit can be achieved using a second CANVAS.)</li>
-                <li>The brushing interaction is <a href="https://levelup.gitconnected.com/debounce-in-javascript-improve-your-applications-performance-5b01855e086">debounced</a>, to reduce drawing in large data sets.</li>
-                <li>Pixel coordinates are cached in integer Arrays, to eliminate scaling calculations during drawing and selection. In a scatter plot matrix, brushing is so frequently used that some caching is worthwhile, and more might be. Caching is probably not worthwhile in every type of graph.</li>
+                <li>Drawing in a single CANVAS element is faster than drawing thousands of SVG elements.</li>
+                <li>Drawing each data point as a single pixel displays large data sets with minimal drawing code.</li>
+                <li>Caching pixel coordinates in integer Arrays eliminates scaling calculations during drawing and selection.</li>
+                <li>Caching deselected points in bitmaps reduces drawing to a fast <a href="https://en.wikipedia.org/wiki/Bit_blit">bit blit</a>, followed by drawing the selected points.</li>
+                <li><a href="https://levelup.gitconnected.com/debounce-in-javascript-improve-your-applications-performance-5b01855e086">Debouncing</a> the brushing interaction reduces drawing in large data sets.</li>
                 </ol>
+                <p>
+                Graph-specific optimizations are justified when brushing is frequent, as it is in scatter plot matrices. Caching and debouncing can improve performance in any type of graph.
+                </p>
                 <p>
                 Performance varies on different devices.  My iMac (2020, 3.6 GHz 10-Core Intel Core i9, 128 GB) can brush 1,000,000 points per plot. In a 4x4 matrix, that's twelve million points.  As our hardware improves, we'll see these numbers grow.
                 </p>
